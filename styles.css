@@ -153,6 +153,64 @@ p {
   align-items: center;
 }
 
+.hero-visual {
+  position: relative;
+  display: grid;
+  gap: 14px;
+}
+
+.device-card {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(6px);
+}
+
+.device-card .device-img {
+  width: 86px;
+  height: 86px;
+  border-radius: 14px;
+  object-fit: cover;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.device-card .device-label {
+  font-weight: 700;
+}
+
+.device-card .device-note {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.device-card.phone {
+  background: linear-gradient(135deg, rgba(92, 241, 181, 0.14), rgba(79, 163, 255, 0.08));
+}
+
+.device-card.tablet {
+  background: linear-gradient(135deg, rgba(79, 163, 255, 0.14), rgba(255, 255, 255, 0.04));
+}
+
+.device-card.laptop {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(92, 241, 181, 0.1));
+}
+
+@keyframes floaty {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
+.float-1 { animation: floaty 6s ease-in-out infinite; }
+.float-2 { animation: floaty 5.5s ease-in-out infinite 0.6s; }
+.float-3 { animation: floaty 6.5s ease-in-out infinite 0.9s; }
+
 .badge {
   display: inline-block;
   padding: 8px 12px;
@@ -708,6 +766,10 @@ button:focus {
   .hero-actions {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .hero-visual {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   }
 
   .quote-summary {
