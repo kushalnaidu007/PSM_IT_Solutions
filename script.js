@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryIssue = document.getElementById('summary-issue');
   const quoteForm = document.getElementById('quote-form');
   const issuePhotos = document.getElementById('issue-photos');
+  const issueDescription = document.getElementById('issue-description');
   const photoList = document.getElementById('photo-list');
   const whatsappFab = document.getElementById('whatsapp-fab');
   const whatsappModal = document.getElementById('whatsapp-modal');
@@ -224,9 +225,37 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
-    quoteForm?.addEventListener('submit', (event) => {
+    quoteForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       updateSummary();
+      const deviceText = deviceSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
+      const brandText = brandSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
+      const modelText = modelSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
+      const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
+      const descText = issueDescription?.value?.trim() || 'N/A';
+
+      const payload = {
+        device: deviceText,
+        brand: brandText,
+        model: modelText,
+        issue: issueText,
+        description: descText
+      };
+
+      try {
+        const response = await fetch('/api/send-quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (!response.ok) {
+          throw new Error('Failed to send');
+        }
+        alert('Thanks! Your request was sent. We will contact you shortly.');
+      } catch (err) {
+        alert('Could not send your request. Please try again.');
+        console.error(err);
+      }
     });
   }
 
