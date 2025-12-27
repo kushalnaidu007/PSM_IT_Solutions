@@ -10,7 +10,9 @@ export default async function handler(req, res) {
     brand = 'N/A',
     model = 'N/A',
     issue = 'N/A',
-    description = 'N/A'
+    description = 'N/A',
+    phone = 'N/A',
+    email = 'N/A'
   } = req.body || {};
 
   const message = [
@@ -19,7 +21,9 @@ export default async function handler(req, res) {
     `Brand: ${brand}`,
     `Model: ${model}`,
     `Issue: ${issue}`,
-    `Description: ${description}`
+    `Description: ${description}`,
+    `Phone: ${phone}`,
+    `Email: ${email}`
   ].join('\n');
 
   const emailTo = process.env.EMAIL_TO;

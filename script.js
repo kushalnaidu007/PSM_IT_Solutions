@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const issuePhotos = document.getElementById('issue-photos');
   const issueDescription = document.getElementById('issue-description');
   const photoList = document.getElementById('photo-list');
+  const customerPhone = document.getElementById('customer-phone');
+  const customerEmail = document.getElementById('customer-email');
   const whatsappFab = document.getElementById('whatsapp-fab');
   const whatsappModal = document.getElementById('whatsapp-modal');
   const whatsappClose = document.getElementById('whatsapp-close');
@@ -233,13 +235,27 @@ document.addEventListener('DOMContentLoaded', () => {
       const modelText = modelSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const descText = issueDescription?.value?.trim() || 'N/A';
+      const phoneText = customerPhone?.value?.trim() || '';
+      const emailText = customerEmail?.value?.trim() || '';
+
+      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
+      if (!phoneText) {
+        alert('Please enter your phone number.');
+        return;
+      }
+      if (!emailRegex.test(emailText)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
 
       const payload = {
         device: deviceText,
         brand: brandText,
         model: modelText,
         issue: issueText,
-        description: descText
+        description: descText,
+        phone: phoneText,
+        email: emailText
       };
 
       try {

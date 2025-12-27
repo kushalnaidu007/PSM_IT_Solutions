@@ -1,7 +1,7 @@
 :root {
   --bg: #18c1fe; /* bright sky blue */
-  --bg-alt: #14a8dc;
-  --card: rgba(255, 255, 255, 0.12);
+  --bg-alt: #ffffff;
+  --card: #ffffff;
   --muted: #123246;
   --text: #0b0b0b;
   --accent: #18c1fe;
@@ -260,14 +260,14 @@ p {
 
 .card {
   background: var(--card);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 18px;
   padding: 22px;
   box-shadow: var(--shadow);
 }
 
 .hero-card {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+  background: #ffffff;
 }
 
 .card-header {
@@ -450,6 +450,7 @@ button:focus {
   top: 90px;
   display: grid;
   gap: 8px;
+  background: #ffffff;
 }
 
 .summary-icons {
@@ -616,6 +617,7 @@ button:focus {
 .price {
   display: grid;
   gap: 8px;
+  background: #ffffff;
 }
 
 .price-header {
