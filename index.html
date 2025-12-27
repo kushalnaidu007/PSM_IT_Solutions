@@ -93,12 +93,6 @@
           <p class="eyebrow">Instant quote</p>
           <h2>Choose your device, brand, model, and issue.</h2>
           <p>Selections update in real time with the right icons and a price guide so you know what to expect.</p>
-          <div class="pill-group">
-            <span class="pill">Phones</span>
-            <span class="pill">Tablets</span>
-            <span class="pill">Laptops</span>
-            <span class="pill">Wearables</span>
-          </div>
           <form class="card quote-card" id="quote-form">
             <div class="form-grid">
               <label>
@@ -126,6 +120,15 @@
                 </select>
               </label>
             </div>
+            <label>
+              Description (optional)
+              <textarea id="issue-description" rows="3" placeholder="Share any extra details or symptoms"></textarea>
+            </label>
+            <label>
+              Upload photos (optional, max 3)
+              <input type="file" id="issue-photos" accept="image/*" multiple>
+              <div id="photo-list" class="photo-list" aria-live="polite"></div>
+            </label>
             <div class="quote-actions">
               <button type="submit" class="button primary">Get my tailored quote</button>
               <p class="form-note">We confirm pricing and availability within 15 minutes during opening hours.</p>
@@ -140,8 +143,7 @@
           <p class="summary-label">Your selection</p>
           <p class="summary-line" id="summary-device">Select a device type to begin.</p>
           <p class="summary-line" id="summary-model">Waiting for model...</p>
-          <p class="summary-line" id="summary-issue">Pick an issue to see pricing guidance.</p>
-          <div class="quote-estimate" id="summary-estimate">Typical screen repairs start at £69. Battery work starts at £49.</div>
+          <p class="summary-line" id="summary-issue">Pick an issue to continue.</p>
           <div class="summary-contact">
             <div>
               <div class="label">Phone</div>
@@ -484,6 +486,32 @@
       </div>
     </div>
   </footer>
+
+  <a class="whatsapp-fab" href="#" id="whatsapp-fab">
+    <span class="whatsapp-icon" aria-hidden="true"></span>
+    <span>Chat on WhatsApp</span>
+  </a>
+
+  <div class="whatsapp-modal-backdrop" id="whatsapp-modal" aria-hidden="true">
+    <div class="whatsapp-modal" role="dialog" aria-modal="true" aria-labelledby="whatsapp-modal-title">
+      <div class="modal-header">
+        <div>
+          <div class="modal-eyebrow">WhatsApp quick chat</div>
+          <h3 id="whatsapp-modal-title">Send us a message</h3>
+          <p>Tell us your device and issue. We reply fast.</p>
+        </div>
+        <button class="modal-close" type="button" id="whatsapp-close" aria-label="Close chat">×</button>
+      </div>
+      <form id="whatsapp-form">
+        <label>
+          Your message
+          <textarea id="whatsapp-message" rows="4" placeholder="Hi, I need help with my iPhone screen..." required></textarea>
+        </label>
+        <button type="submit" class="button primary full">Send on WhatsApp</button>
+        <p class="form-note">Opens WhatsApp with your message pre-filled.</p>
+      </form>
+    </div>
+  </div>
 
   <script src="script.js"></script>
 </body>

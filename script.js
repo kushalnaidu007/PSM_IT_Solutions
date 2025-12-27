@@ -11,8 +11,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const summaryDevice = document.getElementById('summary-device');
   const summaryModel = document.getElementById('summary-model');
   const summaryIssue = document.getElementById('summary-issue');
-  const summaryEstimate = document.getElementById('summary-estimate');
   const quoteForm = document.getElementById('quote-form');
+  const issuePhotos = document.getElementById('issue-photos');
+  const photoList = document.getElementById('photo-list');
+  const whatsappFab = document.getElementById('whatsapp-fab');
+  const whatsappModal = document.getElementById('whatsapp-modal');
+  const whatsappClose = document.getElementById('whatsapp-close');
+  const whatsappForm = document.getElementById('whatsapp-form');
+  const whatsappMessage = document.getElementById('whatsapp-message');
+  const whatsappNumber = '447741438569';
 
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
@@ -71,6 +78,22 @@ document.addEventListener('DOMContentLoaded', () => {
           { id: 'samsung-watch', label: 'Samsung Galaxy Watch', models: ['Watch6', 'Watch5'] },
         ],
       },
+      {
+        id: 'console',
+        label: 'Gaming Console',
+        icon: '🎮',
+        brands: [
+          { id: 'ps', label: 'PlayStation', models: ['PS5', 'PS4 Pro', 'PS4 Slim'] },
+          { id: 'xbox', label: 'Xbox', models: ['Series X', 'Series S', 'Xbox One X'] },
+          { id: 'nintendo', label: 'Nintendo', models: ['Switch OLED', 'Switch', 'Switch Lite'] },
+        ],
+      },
+      {
+        id: 'other',
+        label: 'Other device',
+        icon: '🛠️',
+        brands: [{ id: 'other-brand', label: 'Other brand', models: ['Other model'] }],
+      },
     ];
 
     const issues = [
@@ -80,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { id: 'charging', label: 'Charging port / power', icon: '⚡', estimate: 'Port and power fixes start at £59.' },
       { id: 'camera', label: 'Camera / audio', icon: '📸', estimate: 'Camera or speaker repairs start at £69.' },
       { id: 'data', label: 'Data recovery', icon: '💾', estimate: 'Data-first recovery with custom pricing per case.' },
+      { id: 'other', label: 'Other issue', icon: '🧰', estimate: 'We’ll review details/photos and confirm pricing after inspection.' },
     ];
 
     const buildOptions = (select, placeholder, options) => {
@@ -113,8 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
         : 'Select a device type to begin.';
 
       summaryModel.textContent = selectedModel ? `Model: ${selectedModel}` : 'Waiting for model...';
-      summaryIssue.textContent = selectedIssue ? `Issue: ${selectedIssue.label}` : 'Pick an issue to see pricing guidance.';
-      summaryEstimate.textContent = selectedIssue?.estimate || 'Typical screen repairs start at £69. Battery work starts at £49.';
+      summaryIssue.textContent = selectedIssue ? `Issue: ${selectedIssue.label}` : 'Pick an issue to continue.';
     };
 
     buildOptions(
@@ -158,10 +181,92 @@ document.addEventListener('DOMContentLoaded', () => {
     modelSelect.addEventListener('change', updateSummary);
     issueSelect.addEventListener('change', updateSummary);
 
+    const selectedPhotos = [];
+
+    const renderPhotoChips = () => {
+      if (!photoList) return;
+      photoList.innerHTML = '';
+      selectedPhotos.forEach((file, index) => {
+        const chip = document.createElement('div');
+        chip.className = 'photo-chip';
+        chip.textContent = file.name;
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.setAttribute('aria-label', `Remove ${file.name}`);
+        removeBtn.textContent = '×';
+        removeBtn.addEventListener('click', (event) => {
+          event.preventDefault();
+          event.stopPropagation(); // prevent opening file dialog via label
+          selectedPhotos.splice(index, 1);
+          const dt = new DataTransfer();
+          selectedPhotos.forEach((f) => dt.items.add(f));
+          issuePhotos.files = dt.files;
+          renderPhotoChips();
+        });
+        chip.appendChild(removeBtn);
+        photoList.appendChild(chip);
+      });
+    };
+
+    if (issuePhotos) {
+      issuePhotos.addEventListener('change', (event) => {
+        const files = Array.from(event.target.files || []);
+        let combined = [...selectedPhotos, ...files];
+        if (combined.length > 3) {
+          alert('Please upload a maximum of 3 images.');
+          combined = combined.slice(0, 3);
+        }
+        selectedPhotos.splice(0, selectedPhotos.length, ...combined);
+        const dt = new DataTransfer();
+        selectedPhotos.forEach((file) => dt.items.add(file));
+        issuePhotos.files = dt.files;
+        renderPhotoChips();
+      });
+    }
+
     quoteForm?.addEventListener('submit', (event) => {
       event.preventDefault();
       updateSummary();
-      summaryEstimate.textContent = 'Thanks! We have your selection—call or message and we will confirm exact pricing in minutes.';
     });
   }
+
+  // WhatsApp modal chat
+  const openWhatsAppModal = () => {
+    if (!whatsappModal) return;
+    whatsappModal.classList.add('active');
+    whatsappModal.setAttribute('aria-hidden', 'false');
+    whatsappMessage?.focus();
+  };
+
+  const closeWhatsAppModal = () => {
+    if (!whatsappModal) return;
+    whatsappModal.classList.remove('active');
+    whatsappModal.setAttribute('aria-hidden', 'true');
+  };
+
+  whatsappFab?.addEventListener('click', (event) => {
+    event.preventDefault();
+    openWhatsAppModal();
+  });
+
+  whatsappClose?.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeWhatsAppModal();
+  });
+
+  whatsappModal?.addEventListener('click', (event) => {
+    if (event.target === whatsappModal) {
+      closeWhatsAppModal();
+    }
+  });
+
+  whatsappForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const msg = (whatsappMessage?.value || '').trim();
+    const fallback = 'Hi, I need help with my device repair.';
+    const encoded = encodeURIComponent(msg || fallback);
+    const url = `https://wa.me/${whatsappNumber}?text=${encoded}`;
+    window.open(url, '_blank');
+    closeWhatsAppModal();
+  });
 });

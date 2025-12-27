@@ -1,13 +1,13 @@
 :root {
-  --bg: #06090f;
-  --bg-alt: #0b111d;
-  --card: #0f1729;
-  --muted: #8aa0c2;
-  --text: #e6edf7;
-  --accent: #5cf1b5;
-  --accent-2: #4fa3ff;
-  --line: rgba(255, 255, 255, 0.08);
-  --shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+  --bg: #89cfff; /* sky blue */
+  --bg-alt: #7ab6e4;
+  --card: rgba(255, 255, 255, 0.12);
+  --muted: #1f2a35;
+  --text: #0b0b0b;
+  --accent: #0f62fe;
+  --accent-2: #0b4cb3;
+  --line: rgba(255, 255, 255, 0.18);
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
 }
 
 *,
@@ -18,7 +18,7 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 10% 20%, rgba(92, 241, 181, 0.08), transparent 20%), radial-gradient(circle at 90% 10%, rgba(79, 163, 255, 0.1), transparent 25%), var(--bg);
+  background: var(--bg);
   color: var(--text);
   font-family: 'Manrope', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   line-height: 1.6;
@@ -52,8 +52,8 @@ p {
   top: 0;
   z-index: 10;
   backdrop-filter: blur(10px);
-  background: rgba(6, 9, 15, 0.8);
-  border-bottom: 1px solid var(--line);
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .nav-content {
@@ -89,6 +89,16 @@ p {
   font-size: 0.85rem;
 }
 
+.navbar .brand-name,
+.navbar .brand-subtitle {
+  color: #111111;
+}
+
+.footer .brand-name,
+.footer .brand-subtitle {
+  color: #ffffff;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
@@ -96,17 +106,17 @@ p {
 }
 
 .nav-links a {
-  color: var(--muted);
-  font-weight: 600;
+  color: #111111;
+  font-weight: 700;
   transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 .nav-links a:hover {
-  color: var(--text);
+  color: #0f62fe;
 }
 
 .link-highlight {
-  color: var(--accent);
+  color: #0f62fe;
 }
 
 .nav-toggle {
@@ -123,7 +133,7 @@ p {
   display: block;
   height: 2px;
   width: 20px;
-  background: var(--text);
+  background: #111111;
 }
 
 .cta-inline {
@@ -139,9 +149,9 @@ p {
 .hero-backdrop {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 30% 20%, rgba(92, 241, 181, 0.12), transparent 30%), radial-gradient(circle at 90% 10%, rgba(79, 163, 255, 0.22), transparent 30%);
+  background: radial-gradient(circle at 40% 20%, rgba(255, 255, 255, 0.35), transparent 40%), radial-gradient(circle at 90% 10%, rgba(15, 98, 254, 0.25), transparent 35%);
   filter: blur(30px);
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .hero-grid {
@@ -257,7 +267,7 @@ p {
 }
 
 .hero-card {
-  background: linear-gradient(145deg, rgba(10, 18, 33, 0.9), rgba(11, 18, 30, 0.7));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
 }
 
 .card-header {
@@ -292,10 +302,68 @@ input,
 select {
   padding: 10px 12px;
   border-radius: 10px;
-  border: 1px solid var(--line);
-  background: #0b1321;
-  color: var(--text);
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #111111;
   font-family: inherit;
+}
+
+textarea {
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  background: #ffffff;
+  color: #111111;
+  font-family: inherit;
+  resize: vertical;
+}
+
+input[type="file"] {
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #111111;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  width: 100%;
+}
+
+input[type="file"]::file-selector-button {
+  padding: 8px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  background: #f5f7fb;
+  color: #111111;
+  cursor: pointer;
+}
+
+.photo-list {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.photo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(0, 0, 0, 0.12);
+  color: #0b0b0b;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  font-size: 0.95rem;
+}
+
+.photo-chip button {
+  border: none;
+  background: rgba(0, 0, 0, 0.12);
+  color: #0b0b0b;
+  border-radius: 8px;
+  padding: 4px 6px;
+  cursor: pointer;
+  font-weight: 700;
 }
 
 input:focus,
@@ -320,14 +388,14 @@ button:focus {
 
 .button.primary {
   background: linear-gradient(120deg, var(--accent), var(--accent-2));
-  color: #0a0f1a;
-  box-shadow: 0 12px 30px rgba(79, 163, 255, 0.35);
+  color: #ffffff;
+  box-shadow: 0 12px 30px rgba(15, 98, 254, 0.35);
 }
 
 .button.ghost {
   background: transparent;
-  border-color: var(--line);
-  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #ffffff;
 }
 
 .button.full {
@@ -686,7 +754,7 @@ button:focus {
   background: #05070d;
   border-top: 1px solid var(--line);
   padding: 40px 0 20px;
-  color: var(--muted);
+  color: #ffffff;
 }
 
 .footer-grid {
@@ -705,6 +773,94 @@ button:focus {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+}
+
+.footer a {
+  color: #ffffff;
+}
+
+.footer .label,
+.footer p {
+  color: #ffffff;
+}
+
+.whatsapp-fab {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 14px;
+  background: #25d366;
+  color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.25);
+  font-weight: 800;
+  text-decoration: none;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.whatsapp-fab:hover {
+  filter: brightness(1.05);
+}
+
+.whatsapp-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="%23ffffff" viewBox="0 0 24 24"><path d="M20.52 3.48A11.79 11.79 0 0 0 12.06 0 11.79 11.79 0 0 0 3.6 3.47a11.56 11.56 0 0 0-1.46 14.51L.05 24l6.18-2.02a11.8 11.8 0 0 0 5.82 1.54h.01c6.51 0 11.8-5.3 11.81-11.8 0-3.15-1.23-6.1-3.48-8.24zM12.07 21.4h-.01a9.74 9.74 0 0 1-4.97-1.37l-.36-.21-3.67 1.2 1.2-3.58-.23-.37a9.75 9.75 0 0 1 1.26-11.92 9.76 9.76 0 0 1 6.79-2.67c2.61 0 5.07 1.02 6.92 2.87a9.73 9.73 0 0 1 2.84 6.93c0 5.39-4.39 9.72-9.77 9.72zm5.35-7.25c-.29-.14-1.7-.84-1.96-.93-.26-.1-.45-.14-.64.14-.19.29-.74.93-.91 1.12-.17.19-.34.22-.63.07-.29-.14-1.23-.45-2.34-1.44-.86-.76-1.44-1.7-1.61-1.99-.17-.29-.02-.44.13-.58.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.5-.07-.14-.64-1.54-.87-2.1-.23-.55-.46-.48-.64-.49h-.55c-.19 0-.5.07-.76.36-.26.29-1 1-1 2.43s1.02 2.82 1.16 3.02c.14.19 2 3.05 4.83 4.28.67.29 1.19.46 1.6.59.67.21 1.28.18 1.76.11.54-.08 1.7-.69 1.94-1.36.24-.67.24-1.24.17-1.36-.07-.12-.26-.19-.55-.33z"/></svg>') center/contain no-repeat;
+}
+
+.whatsapp-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 20;
+}
+
+.whatsapp-modal-backdrop.active {
+  display: flex;
+}
+
+.whatsapp-modal {
+  width: min(420px, 90vw);
+  background: #ffffff;
+  color: #0b0b0b;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.modal-eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.75rem;
+  color: #0f62fe;
+  font-weight: 800;
+}
+
+.modal-close {
+  border: none;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+  font-size: 1.2rem;
 }
 
 .newsletter {
