@@ -61,7 +61,7 @@ export default async function handler(req, res) {
   // Send WhatsApp (optional)
   if (whatsappToken && whatsappPhoneId && whatsappTo) {
     try {
-      await fetch(`https://graph.facebook.com/v17.0/${whatsappPhoneId}/messages`, {
+      const waRes = await fetch(`https://graph.facebook.com/v17.0/${whatsappPhoneId}/messages`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${whatsappToken}`,
@@ -74,6 +74,10 @@ export default async function handler(req, res) {
           text: { body: message }
         })
       });
+      if (!waRes.ok) {
+        const errText = await waRes.text();
+        console.error('WhatsApp send failed', waRes.status, errText);
+      }
     } catch (error) {
       console.error('WhatsApp send failed', error);
       // continue without failing the request
