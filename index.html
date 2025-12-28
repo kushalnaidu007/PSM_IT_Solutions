@@ -22,6 +22,7 @@
       <nav class="nav-links" id="nav-links">
         <a href="#quote">Quote</a>
         <a href="#services">Repairs</a>
+        <a href="#buy">Buy</a>
         <a href="#process">How it works</a>
         <a href="#faq">FAQ</a>
       </nav>
@@ -85,7 +86,7 @@
       </div>
     </section>
 
-    <section class="section quote" id="quote">
+    <section class="section alt quote" id="quote">
       <div class="container quote-grid">
         <div>
           <p class="eyebrow">Instant quote</p>
@@ -164,7 +165,7 @@
       </div>
     </section>
 
-    <section class="section alt" id="services">
+    <section class="section" id="services">
       <div class="container">
         <div class="section-header">
           <div>
@@ -214,6 +215,64 @@
               <li>Noise and echo testing</li>
             </ul>
           </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section alt" id="buy">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <p class="eyebrow">Buy devices & accessories</p>
+            <h2>Shop premium phones, tablets, and essentials.</h2>
+            <p>Unlocked devices, official accessories, and curated protection kits—ready to ship or collect in-store.</p>
+          </div>
+          <a class="button ghost" href="#quote">Need something specific? Ask us</a>
+        </div>
+        <div class="grid buy-grid" id="buy-grid">
+          <article class="card product-card" data-category="iphone">
+            <img class="product-img" src="assets/hero-phone.jpg" alt="iPhone models">
+            <h3>iPhone lineup</h3>
+            <p>Latest iPhone models unlocked and ready, with genuine chargers and protection bundles.</p>
+          </article>
+          <article class="card product-card" data-category="ipad">
+            <img class="product-img" src="assets/hero-tablet.jpg" alt="iPad models">
+            <h3>iPad & tablets</h3>
+            <p>iPad Pro, Air, and Mini plus Android tablets with keyboards and cases.</p>
+          </article>
+          <article class="card product-card" data-category="macbook">
+            <img class="product-img" src="assets/hero-laptop.jpg" alt="MacBook lineup">
+            <h3>MacBook & laptops</h3>
+            <p>MacBook Air/Pro and top Windows laptops, set up with warranty and optional migration.</p>
+          </article>
+          <article class="card product-card" data-category="watch">
+            <img class="product-img" src="assets/hero-watch.jpg" alt="Apple Watch and wearables">
+            <h3>Apple Watch & wearables</h3>
+            <p>Series 9, SE, and bands, plus popular wearables with screen protection pre-installed.</p>
+          </article>
+          <article class="card product-card" data-category="accessories">
+            <img class="product-img" src="assets/hero-accessories.jpg" alt="Accessories">
+            <h3>Accessories</h3>
+            <p>Cases, screen guards, MagSafe, chargers, cables, power banks, and car mounts.</p>
+          </article>
+          <article class="card product-card" data-category="audio">
+            <img class="product-img" src="assets/hero-audio.jpg" alt="Audio gear">
+            <h3>Audio & earbuds</h3>
+            <p>AirPods, over-ear headphones, and Bluetooth speakers with setup support.</p>
+          </article>
+        </div>
+        <div class="product-modal-backdrop" id="product-modal" aria-hidden="true">
+          <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
+            <div class="modal-header">
+              <div>
+                <div class="modal-eyebrow">Shop items</div>
+                <h3 id="product-modal-title">Products</h3>
+                <p id="product-modal-subtitle">Curated devices and accessories.</p>
+              </div>
+              <button class="modal-close" type="button" id="product-close" aria-label="Close product list">×</button>
+            </div>
+            <div class="product-list" id="product-list"></div>
+          </div>
         </div>
       </div>
     </section>

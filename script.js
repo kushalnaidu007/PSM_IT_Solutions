@@ -23,6 +23,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const whatsappForm = document.getElementById('whatsapp-form');
   const whatsappMessage = document.getElementById('whatsapp-message');
   const whatsappNumber = '447741438569';
+  const buyGrid = document.getElementById('buy-grid');
+  const productModal = document.getElementById('product-modal');
+  const productClose = document.getElementById('product-close');
+  const productList = document.getElementById('product-list');
 
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
@@ -400,5 +404,79 @@ document.addEventListener('DOMContentLoaded', () => {
     const url = `https://wa.me/${whatsappNumber}?text=${encoded}`;
     window.open(url, '_blank');
     closeWhatsAppModal();
+  });
+
+  // Buy modal with product listings
+  const products = {
+    iphone: [
+      { name: 'iPhone 15 Pro', img: 'assets/hero-phone.jpg' },
+      { name: 'iPhone 14', img: 'assets/hero-phone.jpg' },
+      { name: 'iPhone 13', img: 'assets/hero-phone.jpg' }
+    ],
+    ipad: [
+      { name: 'iPad Pro 12.9"', img: 'assets/hero-tablet.jpg' },
+      { name: 'iPad Air', img: 'assets/hero-tablet.jpg' },
+      { name: 'iPad mini', img: 'assets/hero-tablet.jpg' }
+    ],
+    macbook: [
+      { name: 'MacBook Air M2', img: 'assets/hero-laptop.jpg' },
+      { name: 'MacBook Pro 14"', img: 'assets/hero-laptop.jpg' },
+      { name: 'MacBook Pro 16"', img: 'assets/hero-laptop.jpg' }
+    ],
+    watch: [
+      { name: 'Apple Watch Series 9', img: 'assets/hero-watch.jpg' },
+      { name: 'Apple Watch SE', img: 'assets/hero-watch.jpg' }
+    ],
+    accessories: [
+      { name: 'MagSafe charger', img: 'assets/hero-accessories.jpg' },
+      { name: 'Premium cases', img: 'assets/hero-accessories.jpg' },
+      { name: 'Power banks', img: 'assets/hero-accessories.jpg' }
+    ],
+    audio: [
+      { name: 'AirPods', img: 'assets/hero-audio.jpg' },
+      { name: 'Over-ear headphones', img: 'assets/hero-audio.jpg' },
+      { name: 'Bluetooth speakers', img: 'assets/hero-audio.jpg' }
+    ]
+  };
+
+  const openProductModal = (category) => {
+    if (!productModal || !productList) return;
+    const items = products[category] || [];
+    productList.innerHTML = '';
+    items.forEach((item) => {
+      const div = document.createElement('div');
+      div.className = 'product-item';
+      div.innerHTML = `
+        <img src="${item.img}" alt="${item.name}">
+        <div class="product-name">${item.name}</div>
+      `;
+      productList.appendChild(div);
+    });
+    productModal.classList.add('active');
+    productModal.setAttribute('aria-hidden', 'false');
+  };
+
+  const closeProductModal = () => {
+    if (!productModal) return;
+    productModal.classList.remove('active');
+    productModal.setAttribute('aria-hidden', 'true');
+  };
+
+  buyGrid?.addEventListener('click', (event) => {
+    const card = event.target.closest('.product-card');
+    if (!card) return;
+    const category = card.getAttribute('data-category');
+    openProductModal(category);
+  });
+
+  productClose?.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeProductModal();
+  });
+
+  productModal?.addEventListener('click', (event) => {
+    if (event.target === productModal) {
+      closeProductModal();
+    }
   });
 });
