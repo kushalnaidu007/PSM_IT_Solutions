@@ -253,21 +253,45 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
-      const readFileAsBase64 = (file) =>
+      const resizeImage = (file, maxDim = 1600) =>
         new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => {
-            const result = reader.result || '';
-            const base64 = typeof result === 'string' ? result.split(',')[1] : '';
-            resolve({ name: file.name, type: file.type, data: base64 });
+          if (!file.type.startsWith('image/')) {
+            return resolve(null);
+          }
+          const img = new Image();
+          const objectUrl = URL.createObjectURL(file);
+          img.onload = () => {
+            let { width, height } = img;
+            const scale = Math.min(1, maxDim / Math.max(width, height));
+            width = Math.max(1, Math.round(width * scale));
+            height = Math.max(1, Math.round(height * scale));
+            const canvas = document.createElement('canvas');
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            const dataUrl = canvas.toDataURL('image/jpeg', 0.85); // high quality
+            URL.revokeObjectURL(objectUrl);
+            const base64 = dataUrl.split(',')[1];
+            resolve({ name: file.name, type: 'image/jpeg', data: base64 });
           };
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
+          img.onerror = (e) => {
+            URL.revokeObjectURL(objectUrl);
+            reject(e);
+          };
+          img.src = objectUrl;
         });
 
       let attachments = [];
       try {
-        attachments = await Promise.all(selectedPhotos.map((file) => readFileAsBase64(file)));
+        const oversized = selectedPhotos.find((f) => f.size > 2 * 1024 * 1024);
+        if (oversized) {
+          alert('Each photo must be under 2MB. Please remove or choose smaller files.');
+          return;
+        }
+        attachments = (
+          await Promise.all(selectedPhotos.map((file) => resizeImage(file)))
+        ).filter(Boolean);
       } catch (e) {
         console.error('Failed to read attachments', e);
         alert('Could not read attached photos. Please try again.');
