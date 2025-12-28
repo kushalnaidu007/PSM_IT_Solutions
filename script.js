@@ -238,11 +238,12 @@ document.addEventListener('DOMContentLoaded', () => {
       const phoneText = customerPhone?.value?.trim() || '';
       const emailText = customerEmail?.value?.trim() || '';
 
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
       const phoneDigits = phoneText.replace(/\D/g, '');
+      const uniqueDigits = new Set(phoneDigits.split(''));
 
-      if (phoneDigits.length < 7) {
-        alert('Please enter a valid phone number.');
+      if (phoneDigits.length < 10 || phoneDigits.length > 15 || uniqueDigits.size < 3) {
+        alert('Please enter a valid phone number (10-15 digits).');
         customerPhone?.focus();
         return;
       }
