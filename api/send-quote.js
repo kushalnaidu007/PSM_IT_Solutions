@@ -7,7 +7,7 @@ export default async function handler(req, res) {
 
   const {
     device = 'N/A',
-    brand = 'N/A',
+    series = 'N/A',
     model = 'N/A',
     issue = 'N/A',
     description = 'N/A',
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
   const message = [
     'New repair quote request:',
     `Device: ${device}`,
-    `Brand: ${brand}`,
+    `Series: ${series}`,
     `Model: ${model}`,
     `Issue: ${issue}`,
     `Description: ${description}`,

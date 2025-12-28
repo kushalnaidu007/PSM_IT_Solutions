@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const navLinks = document.getElementById('nav-links');
   const accordionItems = document.querySelectorAll('.accordion-item');
   const deviceSelect = document.getElementById('device-type');
-  const brandSelect = document.getElementById('device-brand');
+  const seriesSelect = document.getElementById('device-series');
   const modelSelect = document.getElementById('device-model');
   const issueSelect = document.getElementById('issue');
   const deviceIcon = document.getElementById('device-icon');
@@ -41,61 +41,97 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
-  if (deviceSelect && brandSelect && modelSelect && issueSelect) {
+  if (deviceSelect && seriesSelect && modelSelect && issueSelect) {
     const devices = [
       {
-        id: 'phone',
-        label: 'Phone',
+        id: 'iphone',
+        label: 'iPhone',
         icon: '📱',
-        brands: [
-          { id: 'apple', label: 'Apple', models: ['iPhone 15 Pro', 'iPhone 14', 'iPhone 13', 'iPhone SE'] },
-          { id: 'samsung', label: 'Samsung', models: ['Galaxy S23', 'Galaxy S22', 'Galaxy A54', 'Galaxy Fold'] },
-          { id: 'google', label: 'Google', models: ['Pixel 8', 'Pixel 7a', 'Pixel 6'] },
+        series: [
+          { id: 'iphone15', label: 'iPhone 15 series', models: ['15 Pro Max', '15 Pro', '15 Plus', '15'] },
+          { id: 'iphone14', label: 'iPhone 14 series', models: ['14 Pro Max', '14 Pro', '14 Plus', '14'] },
+          { id: 'iphone13', label: 'iPhone 13 series', models: ['13 Pro Max', '13 Pro', '13 mini', '13'] },
+          { id: 'iphonese', label: 'iPhone SE', models: ['SE (3rd gen)', 'SE (2nd gen)'] },
         ],
       },
       {
-        id: 'tablet',
-        label: 'Tablet',
+        id: 'ipad',
+        label: 'iPad',
         icon: '📲',
-        brands: [
-          { id: 'ipad', label: 'Apple iPad', models: ['iPad Pro', 'iPad Air', 'iPad Mini', 'iPad 10th Gen'] },
-          { id: 'samsung-tablet', label: 'Samsung Galaxy Tab', models: ['Galaxy Tab S9', 'Galaxy Tab S8', 'Galaxy Tab A8'] },
+        series: [
+          { id: 'ipadpro', label: 'iPad Pro', models: ['12.9"', '11"'] },
+          { id: 'ipadair', label: 'iPad Air', models: ['Air (M2)', 'Air (M1)'] },
+          { id: 'ipadmini', label: 'iPad mini', models: ['Mini (6th gen)', 'Mini (5th gen)'] },
+          { id: 'ipad', label: 'iPad', models: ['iPad 10th gen', 'iPad 9th gen', 'iPad 8th gen'] },
         ],
       },
       {
-        id: 'laptop',
-        label: 'Laptop',
+        id: 'macbook',
+        label: 'MacBook',
         icon: '💻',
-        brands: [
-          { id: 'macbook', label: 'Apple MacBook', models: ['MacBook Air M2', 'MacBook Pro 14"', 'MacBook Pro 13"'] },
-          { id: 'windows', label: 'Windows Laptop', models: ['Dell XPS', 'HP Spectre', 'Lenovo ThinkPad', 'Razer Blade'] },
+        series: [
+          { id: 'air', label: 'MacBook Air', models: ['Air 15" M2', 'Air 13" M2', 'Air 13" M1'] },
+          { id: 'pro14', label: 'MacBook Pro 14"', models: ['M3', 'M2', 'M1'] },
+          { id: 'pro16', label: 'MacBook Pro 16"', models: ['M3', 'M2', 'M1'] },
+          { id: 'pro13', label: 'MacBook Pro 13"', models: ['M2', 'M1'] },
         ],
       },
       {
-        id: 'wearable',
-        label: 'Wearable',
+        id: 'apple-watch',
+        label: 'Apple Watch',
         icon: '⌚',
-        brands: [
-          { id: 'apple-watch', label: 'Apple Watch', models: ['Series 9', 'Series 8', 'SE'] },
-          { id: 'fitbit', label: 'Fitbit', models: ['Versa 4', 'Sense 2', 'Charge 6'] },
-          { id: 'samsung-watch', label: 'Samsung Galaxy Watch', models: ['Watch6', 'Watch5'] },
+        series: [
+          { id: 'series9', label: 'Series 9', models: ['45mm', '41mm'] },
+          { id: 'series8', label: 'Series 8', models: ['45mm', '41mm'] },
+          { id: 'se', label: 'SE', models: ['44mm', '40mm'] },
         ],
       },
       {
         id: 'console',
         label: 'Gaming Console',
         icon: '🎮',
-        brands: [
+        series: [
           { id: 'ps', label: 'PlayStation', models: ['PS5', 'PS4 Pro', 'PS4 Slim'] },
           { id: 'xbox', label: 'Xbox', models: ['Series X', 'Series S', 'Xbox One X'] },
           { id: 'nintendo', label: 'Nintendo', models: ['Switch OLED', 'Switch', 'Switch Lite'] },
         ],
       },
       {
+        id: 'android-phone',
+        label: 'Android phone',
+        icon: '📱',
+        series: [
+          { id: 'samsung-s', label: 'Samsung Galaxy S', models: ['S24', 'S23', 'S22'] },
+          { id: 'samsung-a', label: 'Samsung Galaxy A', models: ['A55', 'A54', 'A34'] },
+          { id: 'pixel', label: 'Google Pixel', models: ['8 Pro', '8', '7a', '7'] },
+          { id: 'oneplus', label: 'OnePlus', models: ['12', '11', 'Nord series'] },
+        ],
+      },
+      {
+        id: 'android-tablet',
+        label: 'Android tablet',
+        icon: '📲',
+        series: [
+          { id: 'tab-s', label: 'Samsung Galaxy Tab S', models: ['S9', 'S8', 'S7'] },
+          { id: 'tab-a', label: 'Samsung Galaxy Tab A', models: ['A9+', 'A8'] },
+          { id: 'lenovo-tab', label: 'Lenovo Tab', models: ['P series', 'M series'] },
+        ],
+      },
+      {
+        id: 'windows-laptop',
+        label: 'Windows laptop',
+        icon: '💻',
+        series: [
+          { id: 'dell', label: 'Dell', models: ['XPS', 'Inspiron', 'Latitude'] },
+          { id: 'hp', label: 'HP', models: ['Spectre', 'Envy', 'Pavilion', 'Omen'] },
+          { id: 'lenovo', label: 'Lenovo', models: ['ThinkPad', 'Yoga', 'Legion'] },
+        ],
+      },
+      {
         id: 'other',
         label: 'Other device',
         icon: '🛠️',
-        brands: [{ id: 'other-brand', label: 'Other brand', models: ['Other model'] }],
+        series: [{ id: 'other-series', label: 'Other series', models: ['Other model'] }],
       },
     ];
 
@@ -128,7 +164,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const updateSummary = () => {
       const selectedDevice = devices.find((d) => d.id === deviceSelect.value);
-      const selectedBrand = selectedDevice?.brands.find((b) => b.id === brandSelect.value);
+      const selectedSeries = selectedDevice?.series.find((s) => s.id === seriesSelect.value);
       const selectedModel = modelSelect.value;
       const selectedIssue = issues.find((i) => i.id === issueSelect.value);
 
@@ -136,7 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
       issueIcon.textContent = selectedIssue?.icon || '🛠️';
 
       summaryDevice.textContent = selectedDevice
-        ? `${selectedDevice.label}${selectedBrand ? ' • ' + selectedBrand.label : ''}`
+        ? `${selectedDevice.label}${selectedSeries ? ' • ' + selectedSeries.label : ''}`
         : 'Select a device type to begin.';
 
       summaryModel.textContent = selectedModel ? `Model: ${selectedModel}` : 'Waiting for model...';
@@ -153,16 +189,16 @@ document.addEventListener('DOMContentLoaded', () => {
       'Select an issue',
       issues.map((issue) => ({ value: issue.id, label: `${issue.icon} ${issue.label}` }))
     );
-    brandSelect.disabled = true;
+    seriesSelect.disabled = true;
     modelSelect.disabled = true;
     issueSelect.disabled = true;
 
     deviceSelect.addEventListener('change', () => {
       const selectedDevice = devices.find((device) => device.id === deviceSelect.value);
       buildOptions(
-        brandSelect,
-        'Select a brand',
-        selectedDevice ? selectedDevice.brands.map((brand) => ({ value: brand.id, label: brand.label })) : []
+        seriesSelect,
+        'Select a series',
+        selectedDevice ? selectedDevice.series.map((series) => ({ value: series.id, label: series.label })) : []
       );
       modelSelect.innerHTML = '<option disabled selected>Select a model</option>';
       modelSelect.disabled = true;
@@ -170,13 +206,13 @@ document.addEventListener('DOMContentLoaded', () => {
       updateSummary();
     });
 
-    brandSelect.addEventListener('change', () => {
+    seriesSelect.addEventListener('change', () => {
       const selectedDevice = devices.find((device) => device.id === deviceSelect.value);
-      const selectedBrand = selectedDevice?.brands.find((brand) => brand.id === brandSelect.value);
+      const selectedSeries = selectedDevice?.series.find((series) => series.id === seriesSelect.value);
       buildOptions(
         modelSelect,
         'Select a model',
-        selectedBrand ? selectedBrand.models.map((model) => ({ value: model, label: model })) : []
+        selectedSeries ? selectedSeries.models.map((model) => ({ value: model, label: model })) : []
       );
       updateSummary();
     });
@@ -231,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
       event.preventDefault();
       updateSummary();
       const deviceText = deviceSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
-      const brandText = brandSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
+      const seriesText = seriesSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const modelText = modelSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const descText = issueDescription?.value?.trim() || 'N/A';
@@ -300,7 +336,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const payload = {
         device: deviceText,
-        brand: brandText,
+        series: seriesText,
         model: modelText,
         issue: issueText,
         description: descText,
