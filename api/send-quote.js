@@ -12,7 +12,8 @@ export default async function handler(req, res) {
     issue = 'N/A',
     description = 'N/A',
     phone = 'N/A',
-    email = 'N/A'
+    email = 'N/A',
+    attachments = []
   } = req.body || {};
 
   const message = [
@@ -52,7 +53,17 @@ export default async function handler(req, res) {
       from: `"PSM IT Solutions" <${emailUser}>`,
       to: emailTo,
       subject: 'New repair quote request',
-      text: message
+      text: message,
+      attachments: Array.isArray(attachments)
+        ? attachments
+            .filter((a) => a?.data)
+            .map((a) => ({
+              filename: a.name || 'photo.jpg',
+              content: a.data,
+              encoding: 'base64',
+              contentType: a.type || 'image/jpeg'
+            }))
+        : []
     });
   } catch (error) {
     console.error('Email send failed', error);

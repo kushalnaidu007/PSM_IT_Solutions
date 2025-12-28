@@ -253,6 +253,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
       }
 
+      const readFileAsBase64 = (file) =>
+        new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            const result = reader.result || '';
+            const base64 = typeof result === 'string' ? result.split(',')[1] : '';
+            resolve({ name: file.name, type: file.type, data: base64 });
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+
+      let attachments = [];
+      try {
+        attachments = await Promise.all(selectedPhotos.map((file) => readFileAsBase64(file)));
+      } catch (e) {
+        console.error('Failed to read attachments', e);
+        alert('Could not read attached photos. Please try again.');
+        return;
+      }
+
       const payload = {
         device: deviceText,
         brand: brandText,
@@ -260,7 +281,8 @@ document.addEventListener('DOMContentLoaded', () => {
         issue: issueText,
         description: descText,
         phone: phoneText,
-        email: emailText
+        email: emailText,
+        attachments
       };
 
       try {
