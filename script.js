@@ -238,13 +238,17 @@ document.addEventListener('DOMContentLoaded', () => {
       const phoneText = customerPhone?.value?.trim() || '';
       const emailText = customerEmail?.value?.trim() || '';
 
-      const emailRegex = /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/;
-      if (!phoneText) {
-        alert('Please enter your phone number.');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const phoneDigits = phoneText.replace(/\D/g, '');
+
+      if (phoneDigits.length < 7) {
+        alert('Please enter a valid phone number.');
+        customerPhone?.focus();
         return;
       }
       if (!emailRegex.test(emailText)) {
         alert('Please enter a valid email address.');
+        customerEmail?.focus();
         return;
       }
 
