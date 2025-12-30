@@ -218,6 +218,13 @@ document.addEventListener('DOMContentLoaded', async () => {
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
     });
+
+    navLinks.addEventListener('click', (event) => {
+      const target = event.target;
+      if (target instanceof HTMLElement && target.tagName.toLowerCase() === 'a') {
+        navLinks.classList.remove('open');
+      }
+    });
   }
 
   accordionItems.forEach((item) => {
