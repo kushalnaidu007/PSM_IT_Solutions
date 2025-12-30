@@ -1,0 +1,37 @@
+kind,device_id,device_label,device_icon,series_id,series_label,model,issue_id,issue_label,issue_icon
+device,iphone,iPhone,📱,iphone15,iPhone 15 series,15 Pro Max,,,
+device,iphone,iPhone,📱,iphone15,iPhone 15 series,15 Pro,,,
+device,iphone,iPhone,📱,iphone15,iPhone 15 series,15 Plus,,,
+device,iphone,iPhone,📱,iphone15,iPhone 15 series,15,,,
+device,iphone,iPhone,📱,iphone14,iPhone 14 series,14 Pro Max,,,
+device,iphone,iPhone,📱,iphone14,iPhone 14 series,14 Pro,,,
+device,iphone,iPhone,📱,iphone14,iPhone 14 series,14 Plus,,,
+device,iphone,iPhone,📱,iphone14,iPhone 14 series,14,,,
+device,ipad,iPad,📲,ipadpro,iPad Pro,12.9",,,
+device,ipad,iPad,📲,ipadair,iPad Air,Air (M2),,,
+device,ipad,iPad,📲,ipadmini,iPad mini,Mini (6th gen),,,
+device,macbook,MacBook,💻,air,MacBook Air,Air 15" M2,,,
+device,macbook,MacBook,💻,pro14,MacBook Pro 14",M3,,,
+device,macbook,MacBook,💻,pro16,MacBook Pro 16",M3,,,
+device,apple-watch,Apple Watch,⌚,series9,Series 9,45mm,,,
+device,apple-watch,Apple Watch,⌚,se,SE,44mm,,,
+device,android-phone,Android phone,📱,samsung-s,Samsung Galaxy S,S24,,,
+device,android-phone,Android phone,📱,pixel,Google Pixel,8 Pro,,,
+device,windows-laptop,Windows laptop,💻,dell,Dell,XPS,,,
+device,console,Gaming Console,🎮,ps,PlayStation,PS5,,,
+device,console,Gaming Console,🎮,ps,PlayStation,PS4 Pro,,,
+device,console,Gaming Console,🎮,xbox,Xbox,Series X,,,
+device,console,Gaming Console,🎮,xbox,Xbox,Series S,,,
+device,console,Gaming Console,🎮,nintendo,Nintendo,Switch OLED,,,
+device,console,Gaming Console,🎮,nintendo,Nintendo,Switch,,,
+device,smartwatch,Smartwatch,⌚,applewatch,Apple Watch,Series 9,,,
+device,smartwatch,Smartwatch,⌚,applewatch,Apple Watch,SE,,,
+device,smartwatch,Smartwatch,⌚,galaxywatch,Galaxy Watch,Watch6,,,
+device,smartwatch,Smartwatch,⌚,fitbit,Fitbit,Versa 4,,,
+issue,,,,,,,screen,Screen cracked,🪟
+issue,,,,,,,battery,Battery draining,🔋
+issue,,,,,,,water,Water damage,💧
+issue,,,,,,,charging,Charging port / power,⚡
+issue,,,,,,,camera,Camera / audio,📸
+issue,,,,,,,data,Data recovery,💾
+issue,,,,,,,other,Other issue,🧰

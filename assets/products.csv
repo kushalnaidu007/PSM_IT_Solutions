@@ -1,0 +1,18 @@
+category,name,img
+iphone,iPhone 15 Pro,assets/hero-phone.jpg
+iphone,iPhone 14,assets/hero-phone.jpg
+iphone,iPhone 13,assets/hero-phone.jpg
+ipad,iPad Pro 12.9",assets/hero-tablet.jpg
+ipad,iPad Air,assets/hero-tablet.jpg
+ipad,iPad mini,assets/hero-tablet.jpg
+macbook,MacBook Air M2,assets/hero-laptop.jpg
+macbook,MacBook Pro 14",assets/hero-laptop.jpg
+macbook,MacBook Pro 16",assets/hero-laptop.jpg
+watch,Apple Watch Series 9,assets/hero-watch.jpg
+watch,Apple Watch SE,assets/hero-watch.jpg
+accessories,MagSafe charger,assets/hero-accessories.jpg
+accessories,Premium cases,assets/hero-accessories.jpg
+accessories,Power banks,assets/hero-accessories.jpg
+audio,AirPods,assets/hero-audio.jpg
+audio,Over-ear headphones,assets/hero-audio.jpg
+audio,Bluetooth speakers,assets/hero-audio.jpg

@@ -1,0 +1,31 @@
+{
+  "iphone": [
+    { "name": "iPhone 15 Pro", "img": "assets/hero-phone.jpg" },
+    { "name": "iPhone 14", "img": "assets/hero-phone.jpg" },
+    { "name": "iPhone 13", "img": "assets/hero-phone.jpg" }
+  ],
+  "ipad": [
+    { "name": "iPad Pro 12.9\"", "img": "assets/hero-tablet.jpg" },
+    { "name": "iPad Air", "img": "assets/hero-tablet.jpg" },
+    { "name": "iPad mini", "img": "assets/hero-tablet.jpg" }
+  ],
+  "macbook": [
+    { "name": "MacBook Air M2", "img": "assets/hero-laptop.jpg" },
+    { "name": "MacBook Pro 14\"", "img": "assets/hero-laptop.jpg" },
+    { "name": "MacBook Pro 16\"", "img": "assets/hero-laptop.jpg" }
+  ],
+  "watch": [
+    { "name": "Apple Watch Series 9", "img": "assets/hero-watch.jpg" },
+    { "name": "Apple Watch SE", "img": "assets/hero-watch.jpg" }
+  ],
+  "accessories": [
+    { "name": "MagSafe charger", "img": "assets/hero-accessories.jpg" },
+    { "name": "Premium cases", "img": "assets/hero-accessories.jpg" },
+    { "name": "Power banks", "img": "assets/hero-accessories.jpg" }
+  ],
+  "audio": [
+    { "name": "AirPods", "img": "assets/hero-audio.jpg" },
+    { "name": "Over-ear headphones", "img": "assets/hero-audio.jpg" },
+    { "name": "Bluetooth speakers", "img": "assets/hero-audio.jpg" }
+  ]
+}

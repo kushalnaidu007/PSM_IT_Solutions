@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   const navToggle = document.getElementById('nav-toggle');
   const navLinks = document.getElementById('nav-links');
   const accordionItems = document.querySelectorAll('.accordion-item');
@@ -28,6 +28,192 @@ document.addEventListener('DOMContentLoaded', () => {
   const productClose = document.getElementById('product-close');
   const productList = document.getElementById('product-list');
 
+  // Form options data
+  let devices = [];
+  let issues = [];
+
+  const defaultDevices = [
+    {
+      id: 'iphone',
+      label: 'iPhone',
+      icon: '📱',
+      series: [
+        { id: 'iphone15', label: 'iPhone 15 series', models: ['15 Pro Max', '15 Pro', '15 Plus', '15'] },
+        { id: 'iphone14', label: 'iPhone 14 series', models: ['14 Pro Max', '14 Pro', '14 Plus', '14'] },
+        { id: 'iphone13', label: 'iPhone 13 series', models: ['13 Pro Max', '13 Pro', '13 mini', '13'] },
+        { id: 'iphonese', label: 'iPhone SE', models: ['SE (3rd gen)', 'SE (2nd gen)'] }
+      ]
+    },
+    {
+      id: 'ipad',
+      label: 'iPad',
+      icon: '📲',
+      series: [
+        { id: 'ipadpro', label: 'iPad Pro', models: ['12.9"', '11"'] },
+        { id: 'ipadair', label: 'iPad Air', models: ['Air (M2)', 'Air (M1)'] },
+        { id: 'ipadmini', label: 'iPad mini', models: ['Mini (6th gen)', 'Mini (5th gen)'] },
+        { id: 'ipad', label: 'iPad', models: ['iPad 10th gen', 'iPad 9th gen', 'iPad 8th gen'] }
+      ]
+    },
+    {
+      id: 'macbook',
+      label: 'MacBook',
+      icon: '💻',
+      series: [
+        { id: 'air', label: 'MacBook Air', models: ['Air 15" M2', 'Air 13" M2', 'Air 13" M1'] },
+        { id: 'pro14', label: 'MacBook Pro 14"', models: ['M3', 'M2', 'M1'] },
+        { id: 'pro16', label: 'MacBook Pro 16"', models: ['M3', 'M2', 'M1'] },
+        { id: 'pro13', label: 'MacBook Pro 13"', models: ['M2', 'M1'] }
+      ]
+    },
+    {
+      id: 'apple-watch',
+      label: 'Apple Watch',
+      icon: '⌚',
+      series: [
+        { id: 'series9', label: 'Series 9', models: ['45mm', '41mm'] },
+        { id: 'series8', label: 'Series 8', models: ['45mm', '41mm'] },
+        { id: 'se', label: 'SE', models: ['44mm', '40mm'] }
+      ]
+    },
+    {
+      id: 'console',
+      label: 'Gaming Console',
+      icon: '🎮',
+      series: [
+        { id: 'ps', label: 'PlayStation', models: ['PS5', 'PS4 Pro', 'PS4 Slim'] },
+        { id: 'xbox', label: 'Xbox', models: ['Series X', 'Series S', 'Xbox One X'] },
+        { id: 'nintendo', label: 'Nintendo', models: ['Switch OLED', 'Switch', 'Switch Lite'] }
+      ]
+    },
+    {
+      id: 'android-phone',
+      label: 'Android phone',
+      icon: '📱',
+      series: [
+        { id: 'samsung-s', label: 'Samsung Galaxy S', models: ['S24', 'S23', 'S22'] },
+        { id: 'samsung-a', label: 'Samsung Galaxy A', models: ['A55', 'A54', 'A34'] },
+        { id: 'pixel', label: 'Google Pixel', models: ['8 Pro', '8', '7a', '7'] },
+        { id: 'oneplus', label: 'OnePlus', models: ['12', '11', 'Nord series'] }
+      ]
+    },
+    {
+      id: 'android-tablet',
+      label: 'Android tablet',
+      icon: '📲',
+      series: [
+        { id: 'tab-s', label: 'Samsung Galaxy Tab S', models: ['S9', 'S8', 'S7'] },
+        { id: 'tab-a', label: 'Samsung Galaxy Tab A', models: ['A9+', 'A8'] },
+        { id: 'lenovo-tab', label: 'Lenovo Tab', models: ['P series', 'M series'] }
+      ]
+    },
+    {
+      id: 'windows-laptop',
+      label: 'Windows laptop',
+      icon: '💻',
+      series: [
+        { id: 'dell', label: 'Dell', models: ['XPS', 'Inspiron', 'Latitude'] },
+        { id: 'hp', label: 'HP', models: ['Spectre', 'Envy', 'Pavilion', 'Omen'] },
+        { id: 'lenovo', label: 'Lenovo', models: ['ThinkPad', 'Yoga', 'Legion'] }
+      ]
+    },
+    {
+      id: 'other',
+      label: 'Other device',
+      icon: '🛠️',
+      series: [{ id: 'other-series', label: 'Other series', models: ['Other model'] }]
+    }
+  ];
+
+  const defaultIssues = [
+    { id: 'screen', label: 'Screen cracked', icon: '🪟' },
+    { id: 'battery', label: 'Battery draining', icon: '🔋' },
+    { id: 'water', label: 'Water damage', icon: '💧' },
+    { id: 'charging', label: 'Charging port / power', icon: '⚡' },
+    { id: 'camera', label: 'Camera / audio', icon: '📸' },
+    { id: 'data', label: 'Data recovery', icon: '💾' },
+    { id: 'other', label: 'Other issue', icon: '🧰' }
+  ];
+
+  const parseFormOptions = (text) => {
+    const lines = text.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2) return { devices: [], issues: [] };
+    const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
+    const getIdx = (name) => headers.indexOf(name);
+    const idx = {
+      kind: getIdx('kind'),
+      deviceId: getIdx('device_id'),
+      deviceLabel: getIdx('device_label'),
+      deviceIcon: getIdx('device_icon'),
+      seriesId: getIdx('series_id'),
+      seriesLabel: getIdx('series_label'),
+      model: getIdx('model'),
+      issueId: getIdx('issue_id'),
+      issueLabel: getIdx('issue_label'),
+      issueIcon: getIdx('issue_icon')
+    };
+    const deviceMap = new Map();
+    const issuesArr = [];
+
+    lines.slice(1).forEach((line) => {
+      const cols = line.split(',');
+      const kind = (cols[idx.kind] || '').trim().toLowerCase();
+      if (kind === 'device') {
+        const dId = (cols[idx.deviceId] || '').trim();
+        const dLabel = (cols[idx.deviceLabel] || '').trim();
+        const dIcon = (cols[idx.deviceIcon] || '').trim() || '📱';
+        const sId = (cols[idx.seriesId] || '').trim();
+        const sLabel = (cols[idx.seriesLabel] || '').trim();
+        const model = (cols[idx.model] || '').trim();
+        if (!dId || !dLabel) return;
+        if (!deviceMap.has(dId)) {
+          deviceMap.set(dId, { id: dId, label: dLabel, icon: dIcon, series: [] });
+        }
+        if (sId && sLabel) {
+          const device = deviceMap.get(dId);
+          let seriesObj = device.series.find((s) => s.id === sId);
+          if (!seriesObj) {
+            seriesObj = { id: sId, label: sLabel, models: [] };
+            device.series.push(seriesObj);
+          }
+          if (model) {
+            seriesObj.models.push(model);
+          }
+        }
+      } else if (kind === 'issue') {
+        const issueId = (cols[idx.issueId] || '').trim();
+        const issueLabel = (cols[idx.issueLabel] || '').trim();
+        const issueIcon = (cols[idx.issueIcon] || '').trim() || '🛠️';
+        if (issueId && issueLabel) {
+          issuesArr.push({ id: issueId, label: issueLabel, icon: issueIcon });
+        }
+      }
+    });
+
+    return { devices: Array.from(deviceMap.values()), issues: issuesArr };
+  };
+
+  const loadFormOptions = async () => {
+    try {
+      const csvRes = await fetch('assets/form-options.csv');
+      if (csvRes.ok) {
+        const csvText = await csvRes.text();
+        const parsed = parseFormOptions(csvText);
+        if (parsed.devices.length && parsed.issues.length) {
+          devices = parsed.devices;
+          issues = parsed.issues;
+          return;
+        }
+      }
+      devices = defaultDevices;
+      issues = defaultIssues;
+    } catch (e) {
+      console.error('Form options load failed, using defaults', e);
+      devices = defaultDevices;
+      issues = defaultIssues;
+    }
+  };
+
   if (navToggle && navLinks) {
     navToggle.addEventListener('click', () => {
       navLinks.classList.toggle('open');
@@ -46,108 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   if (deviceSelect && seriesSelect && modelSelect && issueSelect) {
-    const devices = [
-      {
-        id: 'iphone',
-        label: 'iPhone',
-        icon: '📱',
-        series: [
-          { id: 'iphone15', label: 'iPhone 15 series', models: ['15 Pro Max', '15 Pro', '15 Plus', '15'] },
-          { id: 'iphone14', label: 'iPhone 14 series', models: ['14 Pro Max', '14 Pro', '14 Plus', '14'] },
-          { id: 'iphone13', label: 'iPhone 13 series', models: ['13 Pro Max', '13 Pro', '13 mini', '13'] },
-          { id: 'iphonese', label: 'iPhone SE', models: ['SE (3rd gen)', 'SE (2nd gen)'] },
-        ],
-      },
-      {
-        id: 'ipad',
-        label: 'iPad',
-        icon: '📲',
-        series: [
-          { id: 'ipadpro', label: 'iPad Pro', models: ['12.9"', '11"'] },
-          { id: 'ipadair', label: 'iPad Air', models: ['Air (M2)', 'Air (M1)'] },
-          { id: 'ipadmini', label: 'iPad mini', models: ['Mini (6th gen)', 'Mini (5th gen)'] },
-          { id: 'ipad', label: 'iPad', models: ['iPad 10th gen', 'iPad 9th gen', 'iPad 8th gen'] },
-        ],
-      },
-      {
-        id: 'macbook',
-        label: 'MacBook',
-        icon: '💻',
-        series: [
-          { id: 'air', label: 'MacBook Air', models: ['Air 15" M2', 'Air 13" M2', 'Air 13" M1'] },
-          { id: 'pro14', label: 'MacBook Pro 14"', models: ['M3', 'M2', 'M1'] },
-          { id: 'pro16', label: 'MacBook Pro 16"', models: ['M3', 'M2', 'M1'] },
-          { id: 'pro13', label: 'MacBook Pro 13"', models: ['M2', 'M1'] },
-        ],
-      },
-      {
-        id: 'apple-watch',
-        label: 'Apple Watch',
-        icon: '⌚',
-        series: [
-          { id: 'series9', label: 'Series 9', models: ['45mm', '41mm'] },
-          { id: 'series8', label: 'Series 8', models: ['45mm', '41mm'] },
-          { id: 'se', label: 'SE', models: ['44mm', '40mm'] },
-        ],
-      },
-      {
-        id: 'console',
-        label: 'Gaming Console',
-        icon: '🎮',
-        series: [
-          { id: 'ps', label: 'PlayStation', models: ['PS5', 'PS4 Pro', 'PS4 Slim'] },
-          { id: 'xbox', label: 'Xbox', models: ['Series X', 'Series S', 'Xbox One X'] },
-          { id: 'nintendo', label: 'Nintendo', models: ['Switch OLED', 'Switch', 'Switch Lite'] },
-        ],
-      },
-      {
-        id: 'android-phone',
-        label: 'Android phone',
-        icon: '📱',
-        series: [
-          { id: 'samsung-s', label: 'Samsung Galaxy S', models: ['S24', 'S23', 'S22'] },
-          { id: 'samsung-a', label: 'Samsung Galaxy A', models: ['A55', 'A54', 'A34'] },
-          { id: 'pixel', label: 'Google Pixel', models: ['8 Pro', '8', '7a', '7'] },
-          { id: 'oneplus', label: 'OnePlus', models: ['12', '11', 'Nord series'] },
-        ],
-      },
-      {
-        id: 'android-tablet',
-        label: 'Android tablet',
-        icon: '📲',
-        series: [
-          { id: 'tab-s', label: 'Samsung Galaxy Tab S', models: ['S9', 'S8', 'S7'] },
-          { id: 'tab-a', label: 'Samsung Galaxy Tab A', models: ['A9+', 'A8'] },
-          { id: 'lenovo-tab', label: 'Lenovo Tab', models: ['P series', 'M series'] },
-        ],
-      },
-      {
-        id: 'windows-laptop',
-        label: 'Windows laptop',
-        icon: '💻',
-        series: [
-          { id: 'dell', label: 'Dell', models: ['XPS', 'Inspiron', 'Latitude'] },
-          { id: 'hp', label: 'HP', models: ['Spectre', 'Envy', 'Pavilion', 'Omen'] },
-          { id: 'lenovo', label: 'Lenovo', models: ['ThinkPad', 'Yoga', 'Legion'] },
-        ],
-      },
-      {
-        id: 'other',
-        label: 'Other device',
-        icon: '🛠️',
-        series: [{ id: 'other-series', label: 'Other series', models: ['Other model'] }],
-      },
-    ];
-
-    const issues = [
-      { id: 'screen', label: 'Screen cracked', icon: '🪟', estimate: 'Screens typically £69–£199 depending on model.' },
-      { id: 'battery', label: 'Battery draining', icon: '🔋', estimate: 'Battery and power jobs start at £49.' },
-      { id: 'water', label: 'Water damage', icon: '💧', estimate: 'Deep clean and recovery on a no-fix-no-fee basis.' },
-      { id: 'charging', label: 'Charging port / power', icon: '⚡', estimate: 'Port and power fixes start at £59.' },
-      { id: 'camera', label: 'Camera / audio', icon: '📸', estimate: 'Camera or speaker repairs start at £69.' },
-      { id: 'data', label: 'Data recovery', icon: '💾', estimate: 'Data-first recovery with custom pricing per case.' },
-      { id: 'other', label: 'Other issue', icon: '🧰', estimate: 'We’ll review details/photos and confirm pricing after inspection.' },
-    ];
+    await loadFormOptions();
 
     const buildOptions = (select, placeholder, options) => {
       select.innerHTML = '';
@@ -407,36 +492,79 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Buy modal with product listings
-  const products = {
-    iphone: [
-      { name: 'iPhone 15 Pro', img: 'assets/hero-phone.jpg' },
-      { name: 'iPhone 14', img: 'assets/hero-phone.jpg' },
-      { name: 'iPhone 13', img: 'assets/hero-phone.jpg' }
-    ],
-    ipad: [
-      { name: 'iPad Pro 12.9"', img: 'assets/hero-tablet.jpg' },
-      { name: 'iPad Air', img: 'assets/hero-tablet.jpg' },
-      { name: 'iPad mini', img: 'assets/hero-tablet.jpg' }
-    ],
-    macbook: [
-      { name: 'MacBook Air M2', img: 'assets/hero-laptop.jpg' },
-      { name: 'MacBook Pro 14"', img: 'assets/hero-laptop.jpg' },
-      { name: 'MacBook Pro 16"', img: 'assets/hero-laptop.jpg' }
-    ],
-    watch: [
-      { name: 'Apple Watch Series 9', img: 'assets/hero-watch.jpg' },
-      { name: 'Apple Watch SE', img: 'assets/hero-watch.jpg' }
-    ],
-    accessories: [
-      { name: 'MagSafe charger', img: 'assets/hero-accessories.jpg' },
-      { name: 'Premium cases', img: 'assets/hero-accessories.jpg' },
-      { name: 'Power banks', img: 'assets/hero-accessories.jpg' }
-    ],
-    audio: [
-      { name: 'AirPods', img: 'assets/hero-audio.jpg' },
-      { name: 'Over-ear headphones', img: 'assets/hero-audio.jpg' },
-      { name: 'Bluetooth speakers', img: 'assets/hero-audio.jpg' }
-    ]
+  let products = {};
+
+  const parseCsvProducts = (text) => {
+    const lines = text.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2) return {};
+    const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
+    const categoryIdx = headers.indexOf('category');
+    const nameIdx = headers.indexOf('name');
+    const imgIdx = headers.indexOf('img');
+    if (categoryIdx === -1 || nameIdx === -1 || imgIdx === -1) return {};
+    const map = {};
+    lines.slice(1).forEach((line) => {
+      const cols = line.split(',');
+      const category = (cols[categoryIdx] || '').trim();
+      const name = (cols[nameIdx] || '').trim();
+      const img = (cols[imgIdx] || '').trim();
+      if (!category || !name || !img) return;
+      if (!map[category]) map[category] = [];
+      map[category].push({ name, img });
+    });
+    return map;
+  };
+
+  const loadProducts = async () => {
+    try {
+      // Try CSV first for easy editing
+      const csvRes = await fetch('assets/products.csv');
+      if (csvRes.ok) {
+        const csvText = await csvRes.text();
+        const parsed = parseCsvProducts(csvText);
+        if (Object.keys(parsed).length > 0) {
+          products = parsed;
+          return;
+        }
+      }
+      // Fallback to JSON
+      const res = await fetch('assets/products.json');
+      if (!res.ok) throw new Error('Failed to load products JSON');
+      products = await res.json();
+    } catch (e) {
+      console.error('Product load failed, using fallback', e);
+      products = {
+        iphone: [
+          { name: 'iPhone 15 Pro', img: 'assets/hero-phone.jpg' },
+          { name: 'iPhone 14', img: 'assets/hero-phone.jpg' },
+          { name: 'iPhone 13', img: 'assets/hero-phone.jpg' }
+        ],
+        ipad: [
+          { name: 'iPad Pro 12.9"', img: 'assets/hero-tablet.jpg' },
+          { name: 'iPad Air', img: 'assets/hero-tablet.jpg' },
+          { name: 'iPad mini', img: 'assets/hero-tablet.jpg' }
+        ],
+        macbook: [
+          { name: 'MacBook Air M2', img: 'assets/hero-laptop.jpg' },
+          { name: 'MacBook Pro 14"', img: 'assets/hero-laptop.jpg' },
+          { name: 'MacBook Pro 16"', img: 'assets/hero-laptop.jpg' }
+        ],
+        watch: [
+          { name: 'Apple Watch Series 9', img: 'assets/hero-watch.jpg' },
+          { name: 'Apple Watch SE', img: 'assets/hero-watch.jpg' }
+        ],
+        accessories: [
+          { name: 'MagSafe charger', img: 'assets/hero-accessories.jpg' },
+          { name: 'Premium cases', img: 'assets/hero-accessories.jpg' },
+          { name: 'Power banks', img: 'assets/hero-accessories.jpg' }
+        ],
+        audio: [
+          { name: 'AirPods', img: 'assets/hero-audio.jpg' },
+          { name: 'Over-ear headphones', img: 'assets/hero-audio.jpg' },
+          { name: 'Bluetooth speakers', img: 'assets/hero-audio.jpg' }
+        ]
+      };
+    }
   };
 
   const openProductModal = (category) => {
@@ -479,4 +607,6 @@ document.addEventListener('DOMContentLoaded', () => {
       closeProductModal();
     }
   });
+
+  loadProducts();
 });
