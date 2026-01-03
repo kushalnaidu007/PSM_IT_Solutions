@@ -28,6 +28,7 @@ device,smartwatch,Smartwatch,⌚,applewatch,Apple Watch,Series 9,,,
 device,smartwatch,Smartwatch,⌚,applewatch,Apple Watch,SE,,,
 device,smartwatch,Smartwatch,⌚,galaxywatch,Galaxy Watch,Watch6,,,
 device,smartwatch,Smartwatch,⌚,fitbit,Fitbit,Versa 4,,,
+device,other,Other,🧰,Other,Other,Other,,,
 issue,,,,,,,screen,Screen cracked,🪟
 issue,,,,,,,battery,Battery draining,🔋
 issue,,,,,,,water,Water damage,💧
