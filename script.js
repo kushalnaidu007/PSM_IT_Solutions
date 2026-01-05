@@ -27,6 +27,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   const productModal = document.getElementById('product-modal');
   const productClose = document.getElementById('product-close');
   const productList = document.getElementById('product-list');
+  const reviewsGrid = document.getElementById('reviews-grid');
+  const reviewsLoading = document.getElementById('reviews-loading');
 
   // Form options data
   let devices = [];
@@ -616,4 +618,59 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   loadProducts();
+
+  // Load manual reviews from CSV
+  const loadReviews = async () => {
+    if (!reviewsGrid) return;
+    try {
+      const res = await fetch('assets/reviews.csv');
+      if (!res.ok) throw new Error('Failed to load reviews');
+      const text = await res.text();
+      const lines = text.split(/\r?\n/).filter((l) => l.trim());
+      if (lines.length < 2) {
+        reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
+        return;
+      }
+      const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
+      const idx = {
+        author: headers.indexOf('author'),
+        rating: headers.indexOf('rating'),
+        review: headers.indexOf('text'),
+        meta: headers.indexOf('meta'),
+      };
+      const rows = lines.slice(1).map((line) => line.split(','));
+      reviewsGrid.innerHTML = '';
+      rows.forEach((cols) => {
+        const author = (cols[idx.author] || '').trim();
+        const rating = (cols[idx.rating] || '').trim();
+        const reviewText = (cols[idx.review] || '').trim();
+        const meta = (cols[idx.meta] || '').trim();
+        if (!author && !reviewText) return;
+        const card = document.createElement('article');
+        card.className = 'card testimonial';
+        card.innerHTML = `
+          <div class="quote">“</div>
+          <p>${reviewText || 'No review text provided.'}</p>
+          <div class="author">
+            <div class="avatar">${(author || 'A').slice(0, 2).toUpperCase()}</div>
+            <div>
+              <div class="name">${author || 'Anonymous'}</div>
+              <div class="meta">Rating: ${rating || 'N/A'} ★${meta ? ' • ' + meta : ''}</div>
+            </div>
+          </div>
+        `;
+        reviewsGrid.appendChild(card);
+      });
+      if (!reviewsGrid.innerHTML.trim()) {
+        reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
+      }
+    } catch (e) {
+      if (reviewsGrid) {
+        reviewsGrid.innerHTML = '<p>Could not load reviews right now.</p>';
+      }
+      console.error(e);
+    }
+  };
+
+  loadReviews();
 });
