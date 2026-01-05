@@ -753,6 +753,7 @@ button:focus {
   color: var(--text);
   padding: 14px 16px;
   font-weight: 700;
+  font-size: 1rem;
   cursor: pointer;
 }
 
