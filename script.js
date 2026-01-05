@@ -635,34 +635,54 @@ document.addEventListener('DOMContentLoaded', async () => {
       const idx = {
         author: headers.indexOf('author'),
         rating: headers.indexOf('rating'),
-        review: headers.indexOf('text'),
+        text: headers.indexOf('text'),
         meta: headers.indexOf('meta'),
       };
-      const rows = lines.slice(1).map((line) => line.split(','));
-      reviewsGrid.innerHTML = '';
-      rows.forEach((cols) => {
-        const author = (cols[idx.author] || '').trim();
-        const rating = (cols[idx.rating] || '').trim();
-        const reviewText = (cols[idx.review] || '').trim();
-        const meta = (cols[idx.meta] || '').trim();
-        if (!author && !reviewText) return;
-        const card = document.createElement('article');
-        card.className = 'card testimonial';
-        card.innerHTML = `
-          <div class="quote">“</div>
-          <p>${reviewText || 'No review text provided.'}</p>
-          <div class="author">
-            <div class="avatar">${(author || 'A').slice(0, 2).toUpperCase()}</div>
-            <div>
-              <div class="name">${author || 'Anonymous'}</div>
-              <div class="meta">Rating: ${rating || 'N/A'} ★${meta ? ' • ' + meta : ''}</div>
-            </div>
-          </div>
-        `;
-        reviewsGrid.appendChild(card);
+      const parsed = lines.slice(1).map((line) => {
+        const cols = line.split(',');
+        const author = (cols.shift() || '').trim();
+        const rating = (cols.shift() || '').trim();
+        const meta = cols.length > 1 ? (cols.pop() || '').trim() : '';
+        const reviewText = cols.join(',').trim();
+        return { author, rating, reviewText, meta };
       });
-      if (!reviewsGrid.innerHTML.trim()) {
+
+      const cleanReviews = parsed.filter((r) => r.author || r.reviewText);
+      if (!cleanReviews.length) {
         reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
+        return;
+      }
+
+      const reviewsPerPage = 3;
+      let page = 0;
+
+      const renderReviews = () => {
+        reviewsGrid.classList.add('fade');
+        reviewsGrid.innerHTML = '';
+        for (let i = 0; i < Math.min(reviewsPerPage, cleanReviews.length); i++) {
+          const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
+          const card = document.createElement('article');
+          card.className = 'card testimonial';
+          card.innerHTML = `
+            <div class="quote">“</div>
+            <p>${rev.reviewText || 'No review text provided.'}</p>
+            <div class="author">
+              <div class="avatar">${(rev.author || 'A').slice(0, 2).toUpperCase()}</div>
+              <div>
+                <div class="name">${rev.author || 'Anonymous'}</div>
+                <div class="meta">Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}</div>
+              </div>
+            </div>
+          `;
+          reviewsGrid.appendChild(card);
+        }
+        setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
+        page = (page + 1) % Math.max(1, Math.ceil(cleanReviews.length / reviewsPerPage));
+      };
+
+      renderReviews();
+      if (cleanReviews.length > reviewsPerPage) {
+        setInterval(renderReviews, 5000);
       }
     } catch (e) {
       if (reviewsGrid) {

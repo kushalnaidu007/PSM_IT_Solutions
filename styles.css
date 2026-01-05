@@ -702,12 +702,32 @@ button:focus {
 
 .testimonial-grid {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: stretch;
 }
 
 .testimonial .quote {
   font-size: 2rem;
   color: var(--accent);
   margin: 0;
+}
+
+.testimonial {
+  display: grid;
+  gap: 10px;
+  height: 100%;
+}
+
+.fade {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.6;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .author {
