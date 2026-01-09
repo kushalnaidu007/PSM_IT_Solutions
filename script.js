@@ -453,7 +453,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       div.className = 'product-item';
       const imgSrc = (item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg';
       div.innerHTML = `
-        <img src="${imgSrc}" alt="${item.name}">
+        <img src="${imgSrc}" alt="${item.name}" loading="lazy">
         <div class="product-name">${item.name}</div>
       `;
       div.addEventListener('click', () => openProductDetail(item));
@@ -468,10 +468,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const imgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
     productDetailContent.innerHTML = `
       <div class="product-gallery-main">
-        <img id="detail-main-img" src="${imgs[0]}" alt="${item.name}">
+        <img id="detail-main-img" src="${imgs[0]}" alt="${item.name}" loading="lazy">
       </div>
       <div class="product-thumbs" id="detail-thumbs">
-        ${imgs.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i === 0 ? 'active' : ''}" alt="${item.name}">`).join('')}
+        ${imgs.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i === 0 ? 'active' : ''}" alt="${item.name}" loading="lazy">`).join('')}
       </div>
       <div class="product-name">${item.name}</div>
     `;
