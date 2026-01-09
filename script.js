@@ -23,6 +23,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const productDetailModal = document.getElementById('product-detail-modal');
   const productDetailClose = document.getElementById('product-detail-close');
   const productDetailContent = document.getElementById('product-detail-content');
+  const termsModal = document.getElementById('terms-modal');
+  const termsClose = document.getElementById('terms-close');
+  const termsOpen = document.getElementById('buy-terms-open');
   const reviewsGrid = document.getElementById('reviews-grid');
   const reviewsLoading = document.getElementById('reviews-loading');
 
@@ -528,6 +531,46 @@ document.addEventListener('DOMContentLoaded', async () => {
       closeProductDetailModal();
     }
   });
+
+  termsOpen?.addEventListener('click', (event) => {
+    event.preventDefault();
+    termsModal?.classList.add('active');
+    termsModal?.setAttribute('aria-hidden', 'false');
+  });
+
+  const closeTermsModal = () => {
+    if (!termsModal) return;
+    termsModal.classList.remove('active');
+    termsModal.setAttribute('aria-hidden', 'true');
+  };
+
+  termsClose?.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeTermsModal();
+  });
+
+  termsModal?.addEventListener('click', (event) => {
+    if (event.target === termsModal) {
+      closeTermsModal();
+    }
+  });
+
+  // Load terms content from file for owner-friendly updates
+  const loadTerms = async () => {
+    if (!termsContent) return;
+    try {
+      const res = await fetch('assets/terms.txt');
+      if (!res.ok) throw new Error('Failed to load terms');
+      const text = await res.text();
+      const paragraphs = text.split(/\n\s*\n/).filter(Boolean);
+      termsContent.innerHTML = paragraphs.map((p) => `<p>${p.replace(/\n/g, ' ')}</p>`).join('');
+    } catch (e) {
+      console.error('Could not load terms content', e);
+      termsContent.innerHTML = '<p>Terms are temporarily unavailable. Please contact us for details.</p>';
+    }
+  };
+
+  loadTerms();
 
   loadProducts();
 

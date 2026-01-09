@@ -1,0 +1,43 @@
+WARRANTY TERMS & CONDITIONS
+
+Warranty Claims
+To submit a warranty claim, you must provide valid proof of repair, such as the original receipt. Spondon Tech Solutions reserves the right to inspect the device to determine whether the warranty applies.
+
+Covered Under Warranty
+- Manufacturer defects (electrical or mechanical faults)
+- Faults in new parts within the stated warranty period
+
+Not Covered Under Warranty
+- Any damage occurring after the repair
+- Damage caused by misuse
+- Any form of liquid damage
+- Software-related issues
+- Faults unrelated to the original repair
+- Loss of data (please back up your device before repair)
+- Devices opened or repaired by another company after our repair
+- Screens replaced by us that suffer internal pressure damage without visible cracks or physical damage are not covered under warranty
+
+Refunds / Non-Refundable Repairs
+Some repairs are non-refundable, including liquid-damage repairs, liquid-damage-related repairs, and diagnostic fees if you choose not to proceed with the repair.
+Refunds are only issued if we are unable to fix your device. We provide up to three warranty repair attempts. If the issue remains after the third attempt, we will remove our parts and issue a full refund (a minimum fee and any call-out or postage charges will still apply).
+
+Data Protection
+We collect your name, address, and other necessary personal information during the ordering process so we can notify you when your device is ready and provide after-repair support. By placing an order and using our services, you consent to the use of your personal information as described.
+
+Additional Terms for Warranty Repairs
+The 1-Year Warranty does not apply if the device has suffered accidental damage. Accidental damage includes, but is not limited to:
+- Cracked screens, dented frames, bends, or any drop/impact damage
+- Mishandling that causes further damage
+- Water or liquid damage
+- Damage or faults resulting from attempted repairs by the customer or a third party
+- Software issues unrelated to the repair, including viruses or malicious software
+- Jailbroken or “rooted” devices
+- Waterproof devices, as we cannot guarantee waterproofing after repair
+- New damage unrelated to the original repair
+- Loss of data during repair — customers are strongly advised to back up their devices beforehand
+
+We do not accept liability for lost, corrupted, deleted, or altered data or software. You are fully responsible for backing up your device.
+We may request proof of warranty before carrying out warranty repairs. If the repair falls outside your warranty terms, charges may apply. We will make every effort to notify you of any costs before proceeding.
+
+Liquid Damage Disclaimer
+Warranty is not applicable to any device with water or liquid damage.

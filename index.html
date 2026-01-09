@@ -43,7 +43,7 @@
       <div class="container hero-grid">
         <div>
           <div class="badge">Same-day service • Premium warranty</div>
-          <h1>Broken phone? We'll fix it today.</h1>
+          <h1>Facing issues with your gadgets? We'll fix it today.</h1>
           <p class="lede">Screen replacements, battery swaps, water damage recovery, and data rescue for every major brand. We come to you or repair in-store.</p>
           <div class="hero-actions">
             <a class="button primary" href="#quote">Get an instant quote</a>
@@ -188,6 +188,7 @@
             <p class="eyebrow">Buy devices & accessories</p>
             <h2>Shop premium phones, tablets, and essentials.</h2>
             <p>Unlocked devices, official accessories, and curated protection kits—ready to ship or collect in-store.</p>
+            <p>Contact the store for prices or to book a product.</p>
           </div>
           <a class="button ghost" href="#quote">Need something specific? Ask us</a>
         </div>
@@ -218,6 +219,9 @@
             <p>Consoles, accessories, audio gear, and custom requests—just ask.</p>
           </article>
         </div>
+        <div class="buy-terms">
+          <button class="button ghost" id="buy-terms-open">View terms & conditions</button>
+        </div>
         <div class="product-modal-backdrop" id="product-modal" aria-hidden="true">
           <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title">
             <div class="modal-header">
@@ -242,6 +246,18 @@
               <button class="modal-close" type="button" id="product-detail-close" aria-label="Close product detail">×</button>
             </div>
             <div class="product-detail" id="product-detail-content"></div>
+          </div>
+        </div>
+        <div class="product-modal-backdrop" id="terms-modal" aria-hidden="true">
+          <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
+            <div class="modal-header">
+              <div>
+                <div class="modal-eyebrow">Terms</div>
+                <h3 id="terms-modal-title">Terms & Conditions</h3>
+              </div>
+              <button class="modal-close" type="button" id="terms-close" aria-label="Close terms">×</button>
+            </div>
+            <div class="product-detail" id="terms-content"></div>
           </div>
         </div>
       </div>
