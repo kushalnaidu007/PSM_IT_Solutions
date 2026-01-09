@@ -3,14 +3,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const navLinks = document.getElementById('nav-links');
   const accordionItems = document.querySelectorAll('.accordion-item');
   const deviceSelect = document.getElementById('device-type');
-  const seriesSelect = document.getElementById('device-series');
-  const modelSelect = document.getElementById('device-model');
   const issueSelect = document.getElementById('issue');
-  const deviceIcon = document.getElementById('device-icon');
-  const issueIcon = document.getElementById('issue-icon');
-  const summaryDevice = document.getElementById('summary-device');
-  const summaryModel = document.getElementById('summary-model');
-  const summaryIssue = document.getElementById('summary-issue');
   const quoteForm = document.getElementById('quote-form');
   const issuePhotos = document.getElementById('issue-photos');
   const issueDescription = document.getElementById('issue-description');
@@ -27,6 +20,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const productModal = document.getElementById('product-modal');
   const productClose = document.getElementById('product-close');
   const productList = document.getElementById('product-list');
+  const productDetailModal = document.getElementById('product-detail-modal');
+  const productDetailClose = document.getElementById('product-detail-close');
+  const productDetailContent = document.getElementById('product-detail-content');
   const reviewsGrid = document.getElementById('reviews-grid');
   const reviewsLoading = document.getElementById('reviews-loading');
 
@@ -35,96 +31,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   let issues = [];
 
   const defaultDevices = [
-    {
-      id: 'iphone',
-      label: 'iPhone',
-      icon: '📱',
-      series: [
-        { id: 'iphone15', label: 'iPhone 15 series', models: ['15 Pro Max', '15 Pro', '15 Plus', '15'] },
-        { id: 'iphone14', label: 'iPhone 14 series', models: ['14 Pro Max', '14 Pro', '14 Plus', '14'] },
-        { id: 'iphone13', label: 'iPhone 13 series', models: ['13 Pro Max', '13 Pro', '13 mini', '13'] },
-        { id: 'iphonese', label: 'iPhone SE', models: ['SE (3rd gen)', 'SE (2nd gen)'] }
-      ]
-    },
-    {
-      id: 'ipad',
-      label: 'iPad',
-      icon: '📲',
-      series: [
-        { id: 'ipadpro', label: 'iPad Pro', models: ['12.9"', '11"'] },
-        { id: 'ipadair', label: 'iPad Air', models: ['Air (M2)', 'Air (M1)'] },
-        { id: 'ipadmini', label: 'iPad mini', models: ['Mini (6th gen)', 'Mini (5th gen)'] },
-        { id: 'ipad', label: 'iPad', models: ['iPad 10th gen', 'iPad 9th gen', 'iPad 8th gen'] }
-      ]
-    },
-    {
-      id: 'macbook',
-      label: 'MacBook',
-      icon: '💻',
-      series: [
-        { id: 'air', label: 'MacBook Air', models: ['Air 15" M2', 'Air 13" M2', 'Air 13" M1'] },
-        { id: 'pro14', label: 'MacBook Pro 14"', models: ['M3', 'M2', 'M1'] },
-        { id: 'pro16', label: 'MacBook Pro 16"', models: ['M3', 'M2', 'M1'] },
-        { id: 'pro13', label: 'MacBook Pro 13"', models: ['M2', 'M1'] }
-      ]
-    },
-    {
-      id: 'apple-watch',
-      label: 'Apple Watch',
-      icon: '⌚',
-      series: [
-        { id: 'series9', label: 'Series 9', models: ['45mm', '41mm'] },
-        { id: 'series8', label: 'Series 8', models: ['45mm', '41mm'] },
-        { id: 'se', label: 'SE', models: ['44mm', '40mm'] }
-      ]
-    },
-    {
-      id: 'console',
-      label: 'Gaming Console',
-      icon: '🎮',
-      series: [
-        { id: 'ps', label: 'PlayStation', models: ['PS5', 'PS4 Pro', 'PS4 Slim'] },
-        { id: 'xbox', label: 'Xbox', models: ['Series X', 'Series S', 'Xbox One X'] },
-        { id: 'nintendo', label: 'Nintendo', models: ['Switch OLED', 'Switch', 'Switch Lite'] }
-      ]
-    },
-    {
-      id: 'android-phone',
-      label: 'Android phone',
-      icon: '📱',
-      series: [
-        { id: 'samsung-s', label: 'Samsung Galaxy S', models: ['S24', 'S23', 'S22'] },
-        { id: 'samsung-a', label: 'Samsung Galaxy A', models: ['A55', 'A54', 'A34'] },
-        { id: 'pixel', label: 'Google Pixel', models: ['8 Pro', '8', '7a', '7'] },
-        { id: 'oneplus', label: 'OnePlus', models: ['12', '11', 'Nord series'] }
-      ]
-    },
-    {
-      id: 'android-tablet',
-      label: 'Android tablet',
-      icon: '📲',
-      series: [
-        { id: 'tab-s', label: 'Samsung Galaxy Tab S', models: ['S9', 'S8', 'S7'] },
-        { id: 'tab-a', label: 'Samsung Galaxy Tab A', models: ['A9+', 'A8'] },
-        { id: 'lenovo-tab', label: 'Lenovo Tab', models: ['P series', 'M series'] }
-      ]
-    },
-    {
-      id: 'windows-laptop',
-      label: 'Windows laptop',
-      icon: '💻',
-      series: [
-        { id: 'dell', label: 'Dell', models: ['XPS', 'Inspiron', 'Latitude'] },
-        { id: 'hp', label: 'HP', models: ['Spectre', 'Envy', 'Pavilion', 'Omen'] },
-        { id: 'lenovo', label: 'Lenovo', models: ['ThinkPad', 'Yoga', 'Legion'] }
-      ]
-    },
-    {
-      id: 'other',
-      label: 'Other device',
-      icon: '🛠️',
-      series: [{ id: 'other-series', label: 'Other series', models: ['Other model'] }]
-    }
+    { id: 'iphone', label: 'iPhone', icon: '📱' },
+    { id: 'ipad', label: 'iPad', icon: '📲' },
+    { id: 'macbook', label: 'MacBook', icon: '💻' },
+    { id: 'apple-watch', label: 'Apple Watch', icon: '⌚' },
+    { id: 'android-phone-samsung', label: 'Android phone (Samsung)', icon: '📱' },
+    { id: 'android-phone-pixel', label: 'Android phone (Pixel)', icon: '📱' },
+    { id: 'android-phone-oneplus', label: 'Android phone (OnePlus)', icon: '📱' },
+    { id: 'android-phone-xiaomi', label: 'Android phone (Xiaomi)', icon: '📱' },
+    { id: 'android-phone-oppo', label: 'Android phone (Oppo)', icon: '📱' },
+    { id: 'android-phone-other', label: 'Other Android', icon: '📱' },
+    { id: 'android-tablet', label: 'Android tablet', icon: '📲' },
+    { id: 'windows-laptop', label: 'Windows laptop', icon: '💻' },
+    { id: 'console', label: 'Gaming Console', icon: '🎮' },
+    { id: 'smartwatch', label: 'Smartwatch', icon: '⌚' },
+    { id: 'other', label: 'Other', icon: '🧰' }
   ];
 
   const defaultIssues = [
@@ -147,9 +68,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       deviceId: getIdx('device_id'),
       deviceLabel: getIdx('device_label'),
       deviceIcon: getIdx('device_icon'),
-      seriesId: getIdx('series_id'),
-      seriesLabel: getIdx('series_label'),
-      model: getIdx('model'),
       issueId: getIdx('issue_id'),
       issueLabel: getIdx('issue_label'),
       issueIcon: getIdx('issue_icon')
@@ -164,23 +82,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         const dId = (cols[idx.deviceId] || '').trim();
         const dLabel = (cols[idx.deviceLabel] || '').trim();
         const dIcon = (cols[idx.deviceIcon] || '').trim() || '📱';
-        const sId = (cols[idx.seriesId] || '').trim();
-        const sLabel = (cols[idx.seriesLabel] || '').trim();
-        const model = (cols[idx.model] || '').trim();
         if (!dId || !dLabel) return;
         if (!deviceMap.has(dId)) {
-          deviceMap.set(dId, { id: dId, label: dLabel, icon: dIcon, series: [] });
-        }
-        if (sId && sLabel) {
-          const device = deviceMap.get(dId);
-          let seriesObj = device.series.find((s) => s.id === sId);
-          if (!seriesObj) {
-            seriesObj = { id: sId, label: sLabel, models: [] };
-            device.series.push(seriesObj);
-          }
-          if (model) {
-            seriesObj.models.push(model);
-          }
+          deviceMap.set(dId, { id: dId, label: dLabel, icon: dIcon });
         }
       } else if (kind === 'issue') {
         const issueId = (cols[idx.issueId] || '').trim();
@@ -240,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  if (deviceSelect && seriesSelect && modelSelect && issueSelect) {
+  if (deviceSelect && issueSelect) {
     await loadFormOptions();
 
     const buildOptions = (select, placeholder, options) => {
@@ -260,22 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       select.disabled = options.length === 0;
     };
 
-    const updateSummary = () => {
-      const selectedDevice = devices.find((d) => d.id === deviceSelect.value);
-      const selectedSeries = selectedDevice?.series.find((s) => s.id === seriesSelect.value);
-      const selectedModel = modelSelect.value;
-      const selectedIssue = issues.find((i) => i.id === issueSelect.value);
-
-      deviceIcon.textContent = selectedDevice?.icon || '📱';
-      issueIcon.textContent = selectedIssue?.icon || '🛠️';
-
-      summaryDevice.textContent = selectedDevice
-        ? `${selectedDevice.label}${selectedSeries ? ' • ' + selectedSeries.label : ''}`
-        : 'Select a device type to begin.';
-
-      summaryModel.textContent = selectedModel ? `Model: ${selectedModel}` : 'Waiting for model...';
-      summaryIssue.textContent = selectedIssue ? `Issue: ${selectedIssue.label}` : 'Pick an issue to continue.';
-    };
+    const updateSummary = () => {};
 
     buildOptions(
       deviceSelect,
@@ -287,35 +176,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       'Select an issue',
       issues.map((issue) => ({ value: issue.id, label: `${issue.icon} ${issue.label}` }))
     );
-    seriesSelect.disabled = true;
-    modelSelect.disabled = true;
     issueSelect.disabled = true;
 
     deviceSelect.addEventListener('change', () => {
       const selectedDevice = devices.find((device) => device.id === deviceSelect.value);
-      buildOptions(
-        seriesSelect,
-        'Select a series',
-        selectedDevice ? selectedDevice.series.map((series) => ({ value: series.id, label: series.label })) : []
-      );
-      modelSelect.innerHTML = '<option disabled selected>Select a model</option>';
-      modelSelect.disabled = true;
       issueSelect.disabled = !selectedDevice;
       updateSummary();
     });
 
-    seriesSelect.addEventListener('change', () => {
-      const selectedDevice = devices.find((device) => device.id === deviceSelect.value);
-      const selectedSeries = selectedDevice?.series.find((series) => series.id === seriesSelect.value);
-      buildOptions(
-        modelSelect,
-        'Select a model',
-        selectedSeries ? selectedSeries.models.map((model) => ({ value: model, label: model })) : []
-      );
-      updateSummary();
-    });
-
-    modelSelect.addEventListener('change', updateSummary);
     issueSelect.addEventListener('change', updateSummary);
 
     const selectedPhotos = [];
@@ -509,17 +377,21 @@ document.addEventListener('DOMContentLoaded', async () => {
     const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
     const categoryIdx = headers.indexOf('category');
     const nameIdx = headers.indexOf('name');
-    const imgIdx = headers.indexOf('img');
-    if (categoryIdx === -1 || nameIdx === -1 || imgIdx === -1) return {};
+    const img1Idx = headers.indexOf('img1');
+    const img2Idx = headers.indexOf('img2');
+    const img3Idx = headers.indexOf('img3');
+    if (categoryIdx === -1 || nameIdx === -1) return {};
     const map = {};
     lines.slice(1).forEach((line) => {
       const cols = line.split(',');
       const category = (cols[categoryIdx] || '').trim();
       const name = (cols[nameIdx] || '').trim();
-      const img = (cols[imgIdx] || '').trim();
-      if (!category || !name || !img) return;
+      const imgs = [img1Idx, img2Idx, img3Idx]
+        .map((idx) => (idx >= 0 ? (cols[idx] || '').trim() : ''))
+        .filter(Boolean);
+      if (!category || !name || imgs.length === 0) return;
       if (!map[category]) map[category] = [];
-      map[category].push({ name, img });
+      map[category].push({ name, imgs });
     });
     return map;
   };
@@ -543,34 +415,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     } catch (e) {
       console.error('Product load failed, using fallback', e);
       products = {
-        iphone: [
-          { name: 'iPhone 15 Pro', img: 'assets/hero-phone.jpg' },
-          { name: 'iPhone 14', img: 'assets/hero-phone.jpg' },
-          { name: 'iPhone 13', img: 'assets/hero-phone.jpg' }
+        phones: [
+          { name: 'iPhone 15 Pro', imgs: ['assets/hero-phone.jpg', 'assets/hero-phone.jpg', 'assets/hero-phone.jpg'] },
+          { name: 'Samsung Galaxy S24', imgs: ['assets/hero-phone.jpg', 'assets/hero-phone.jpg', 'assets/hero-phone.jpg'] },
+          { name: 'Google Pixel 8 Pro', imgs: ['assets/hero-phone.jpg', 'assets/hero-phone.jpg', 'assets/hero-phone.jpg'] }
         ],
-        ipad: [
-          { name: 'iPad Pro 12.9"', img: 'assets/hero-tablet.jpg' },
-          { name: 'iPad Air', img: 'assets/hero-tablet.jpg' },
-          { name: 'iPad mini', img: 'assets/hero-tablet.jpg' }
+        tablets: [
+          { name: 'iPad Pro 12.9"', imgs: ['assets/hero-tablet.jpg', 'assets/hero-tablet.jpg', 'assets/hero-tablet.jpg'] },
+          { name: 'Galaxy Tab S9', imgs: ['assets/hero-tablet.jpg', 'assets/hero-tablet.jpg', 'assets/hero-tablet.jpg'] },
+          { name: 'Lenovo Tab P series', imgs: ['assets/hero-tablet.jpg', 'assets/hero-tablet.jpg', 'assets/hero-tablet.jpg'] }
         ],
-        macbook: [
-          { name: 'MacBook Air M2', img: 'assets/hero-laptop.jpg' },
-          { name: 'MacBook Pro 14"', img: 'assets/hero-laptop.jpg' },
-          { name: 'MacBook Pro 16"', img: 'assets/hero-laptop.jpg' }
+        laptops: [
+          { name: 'MacBook Air M2', imgs: ['assets/hero-laptop.jpg', 'assets/hero-laptop.jpg', 'assets/hero-laptop.jpg'] },
+          { name: 'MacBook Pro 14"', imgs: ['assets/hero-laptop.jpg', 'assets/hero-laptop.jpg', 'assets/hero-laptop.jpg'] },
+          { name: 'Windows Ultrabook', imgs: ['assets/hero-laptop.jpg', 'assets/hero-laptop.jpg', 'assets/hero-laptop.jpg'] }
         ],
-        watch: [
-          { name: 'Apple Watch Series 9', img: 'assets/hero-watch.jpg' },
-          { name: 'Apple Watch SE', img: 'assets/hero-watch.jpg' }
+        watches: [
+          { name: 'Apple Watch Series 9', imgs: ['assets/hero-watch.jpg', 'assets/hero-watch.jpg', 'assets/hero-watch.jpg'] },
+          { name: 'Galaxy Watch6', imgs: ['assets/hero-watch.jpg', 'assets/hero-watch.jpg', 'assets/hero-watch.jpg'] },
+          { name: 'Fitbit Versa 4', imgs: ['assets/hero-watch.jpg', 'assets/hero-watch.jpg', 'assets/hero-watch.jpg'] }
         ],
-        accessories: [
-          { name: 'MagSafe charger', img: 'assets/hero-accessories.jpg' },
-          { name: 'Premium cases', img: 'assets/hero-accessories.jpg' },
-          { name: 'Power banks', img: 'assets/hero-accessories.jpg' }
-        ],
-        audio: [
-          { name: 'AirPods', img: 'assets/hero-audio.jpg' },
-          { name: 'Over-ear headphones', img: 'assets/hero-audio.jpg' },
-          { name: 'Bluetooth speakers', img: 'assets/hero-audio.jpg' }
+        'other-devices': [
+          { name: 'PlayStation 5', imgs: ['assets/hero-accessories.jpg', 'assets/hero-accessories.jpg', 'assets/hero-accessories.jpg'] },
+          { name: 'Xbox Series X', imgs: ['assets/hero-accessories.jpg', 'assets/hero-accessories.jpg', 'assets/hero-accessories.jpg'] },
+          { name: 'Accessories bundle', imgs: ['assets/hero-accessories.jpg', 'assets/hero-accessories.jpg', 'assets/hero-accessories.jpg'] }
         ]
       };
     }
@@ -580,23 +448,56 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!productModal || !productList) return;
     const items = products[category] || [];
     productList.innerHTML = '';
-    items.forEach((item) => {
+    items.forEach((item, idx) => {
       const div = document.createElement('div');
       div.className = 'product-item';
+      const imgSrc = (item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg';
       div.innerHTML = `
-        <img src="${item.img}" alt="${item.name}">
+        <img src="${imgSrc}" alt="${item.name}">
         <div class="product-name">${item.name}</div>
       `;
+      div.addEventListener('click', () => openProductDetail(item));
       productList.appendChild(div);
     });
     productModal.classList.add('active');
     productModal.setAttribute('aria-hidden', 'false');
   };
 
+  const openProductDetail = (item) => {
+    if (!productDetailModal || !productDetailContent) return;
+    const imgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
+    productDetailContent.innerHTML = `
+      <div class="product-gallery-main">
+        <img id="detail-main-img" src="${imgs[0]}" alt="${item.name}">
+      </div>
+      <div class="product-thumbs" id="detail-thumbs">
+        ${imgs.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i === 0 ? 'active' : ''}" alt="${item.name}">`).join('')}
+      </div>
+      <div class="product-name">${item.name}</div>
+    `;
+    const mainImg = document.getElementById('detail-main-img');
+    const thumbs = Array.from(document.querySelectorAll('#detail-thumbs img'));
+    thumbs.forEach((thumb) => {
+      thumb.addEventListener('click', () => {
+        thumbs.forEach((t) => t.classList.remove('active'));
+        thumb.classList.add('active');
+        mainImg.src = thumb.getAttribute('src');
+      });
+    });
+    productDetailModal.classList.add('active');
+    productDetailModal.setAttribute('aria-hidden', 'false');
+  };
+
   const closeProductModal = () => {
     if (!productModal) return;
     productModal.classList.remove('active');
     productModal.setAttribute('aria-hidden', 'true');
+  };
+
+  const closeProductDetailModal = () => {
+    if (!productDetailModal) return;
+    productDetailModal.classList.remove('active');
+    productDetailModal.setAttribute('aria-hidden', 'true');
   };
 
   buyGrid?.addEventListener('click', (event) => {
@@ -611,9 +512,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     closeProductModal();
   });
 
+  productDetailClose?.addEventListener('click', (event) => {
+    event.preventDefault();
+    closeProductDetailModal();
+  });
+
   productModal?.addEventListener('click', (event) => {
     if (event.target === productModal) {
       closeProductModal();
+    }
+  });
+
+  productDetailModal?.addEventListener('click', (event) => {
+    if (event.target === productDetailModal) {
+      closeProductDetailModal();
     }
   });
 

@@ -1,55 +1,16 @@
-category,name,img
-iphone,iPhone 6s,assets/hero-phone.jpg
-iphone,iPhone 6s Plus,assets/hero-phone.jpg
-iphone,iPhone 7,assets/hero-phone.jpg
-iphone,iPhone 7 Plus,assets/hero-phone.jpg
-iphone,iPhone 8,assets/hero-phone.jpg
-iphone,iPhone 8 Plus,assets/hero-phone.jpg
-iphone,iPhone X,assets/hero-phone.jpg
-iphone,iPhone XS,assets/hero-phone.jpg
-iphone,iPhone XS Max,assets/hero-phone.jpg
-iphone,iPhone 11,assets/hero-phone.jpg
-iphone,iPhone 11 Pro,assets/hero-phone.jpg
-iphone,iPhone 11 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 12 Mini,assets/hero-phone.jpg
-iphone,iPhone 12,assets/hero-phone.jpg
-iphone,iPhone 12 Pro,assets/hero-phone.jpg
-iphone,iPhone 12 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 13 Mini,assets/hero-phone.jpg
-iphone,iPhone 13,assets/hero-phone.jpg
-iphone,iPhone 13 Pro,assets/hero-phone.jpg
-iphone,iPhone 13 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 14,assets/hero-phone.jpg
-iphone,iPhone 14 Plus,assets/hero-phone.jpg
-iphone,iPhone 14 Pro,assets/hero-phone.jpg
-iphone,iPhone 14 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 15,assets/hero-phone.jpg
-iphone,iPhone 15 Plus,assets/hero-phone.jpg
-iphone,iPhone 15 Pro,assets/hero-phone.jpg
-iphone,iPhone 15 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 16,assets/hero-phone.jpg
-iphone,iPhone 16 Plus,assets/hero-phone.jpg
-iphone,iPhone 16 Pro,assets/hero-phone.jpg
-iphone,iPhone 16 Pro Max,assets/hero-phone.jpg
-iphone,iPhone 17,assets/hero-phone.jpg
-iphone,iPhone 17 Air,assets/hero-phone.jpg
-iphone,iPhone 17 Pro,assets/hero-phone.jpg
-iphone,iPhone 17 Pro Max,assets/hero-phone.jpg
-iphone,iPhone SE 1st Gen,assets/hero-phone.jpg
-iphone,iPhone SE 2020,assets/hero-phone.jpg
-iphone,iPhone SE 2022,assets/hero-phone.jpg
-iphone,iPhone SE 4th Gen,assets/hero-phone.jpg
-ipad,iPad Pro 12.9",assets/hero-tablet.jpg
-ipad,iPad Air,assets/hero-tablet.jpg
-ipad,iPad mini,assets/hero-tablet.jpg
-macbook,MacBook Air M2,assets/hero-laptop.jpg
-macbook,MacBook Pro 14",assets/hero-laptop.jpg
-macbook,MacBook Pro 16",assets/hero-laptop.jpg
-watch,Apple Watch Series 9,assets/hero-watch.jpg
-watch,Apple Watch SE,assets/hero-watch.jpg
-accessories,MagSafe charger,assets/hero-accessories.jpg
-accessories,Premium cases,assets/hero-accessories.jpg
-accessories,Power banks,assets/hero-accessories.jpg
-audio,AirPods,assets/hero-audio.jpg
-audio,Over-ear headphones,assets/hero-audio.jpg
-audio,Bluetooth speakers,assets/hero-audio.jpg
+category,name,img1,img2,img3
+phones,iPhone 15 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,Samsung Galaxy S24,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,Google Pixel 8 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+tablets,iPad Pro 12.9",assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
+tablets,Galaxy Tab S9,assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
+tablets,Lenovo Tab P series,assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
+laptops,MacBook Air M2,assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
+laptops,MacBook Pro 14",assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
+laptops,Windows Ultrabook,assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
+watches,Apple Watch Series 9,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
+watches,Galaxy Watch6,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
+watches,Fitbit Versa 4,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
+other-devices,PlayStation 5,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg
+other-devices,Xbox Series X,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg
+other-devices,Accessories bundle,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg

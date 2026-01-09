@@ -50,10 +50,6 @@
           </div>
           <div class="hero-meta">
             <div>
-              <div class="meta-title">Rated 4.9/5</div>
-              <div class="meta-copy">2k+ happy devices restored</div>
-            </div>
-            <div>
               <div class="meta-title">Response in 15 min</div>
               <div class="meta-copy">Chat, call, or drop in</div>
             </div>
@@ -99,18 +95,6 @@
                 </select>
               </label>
               <label>
-                Series
-                <select id="device-series" disabled>
-                  <option selected disabled>Select a series</option>
-                </select>
-              </label>
-              <label>
-                Model / Variant
-                <select id="device-model" disabled>
-                  <option selected disabled>Select a model</option>
-                </select>
-              </label>
-              <label>
                 Issue
                 <select id="issue" disabled>
                   <option selected disabled>Select an issue</option>
@@ -139,16 +123,6 @@
               <p class="form-note">We confirm pricing and availability within 15 minutes during opening hours.</p>
             </div>
           </form>
-        </div>
-        <div class="card quote-summary">
-          <div class="summary-icons">
-            <div class="badge-icon" id="device-icon" aria-hidden="true">📱</div>
-            <div class="badge-icon soft" id="issue-icon" aria-hidden="true">🛠️</div>
-          </div>
-          <p class="summary-label">Your selection</p>
-          <p class="summary-line" id="summary-device">Select a device type to begin.</p>
-          <p class="summary-line" id="summary-model">Waiting for model...</p>
-          <p class="summary-line" id="summary-issue">Pick an issue to continue.</p>
         </div>
       </div>
     </section>
@@ -218,35 +192,30 @@
           <a class="button ghost" href="#quote">Need something specific? Ask us</a>
         </div>
         <div class="grid buy-grid" id="buy-grid">
-          <article class="card product-card" data-category="iphone">
-            <img class="product-img" src="assets/hero-phone.jpg" alt="iPhone models">
-            <h3>iPhone lineup</h3>
-            <p>Latest iPhone models unlocked and ready, with genuine chargers and protection bundles.</p>
+          <article class="card product-card" data-category="phones">
+            <img class="product-img" src="assets/hero-phone.jpg" alt="Phones">
+            <h3>Phones</h3>
+            <p>Latest iPhone and Android phones unlocked, with protection and chargers.</p>
           </article>
-          <article class="card product-card" data-category="ipad">
-            <img class="product-img" src="assets/hero-tablet.jpg" alt="iPad models">
-            <h3>iPad & tablets</h3>
-            <p>iPad Pro, Air, and Mini plus Android tablets with keyboards and cases.</p>
+          <article class="card product-card" data-category="tablets">
+            <img class="product-img" src="assets/hero-tablet.jpg" alt="Tablets">
+            <h3>Tablets</h3>
+            <p>iPads and Android tablets with keyboards, pens, and sturdy cases.</p>
           </article>
-          <article class="card product-card" data-category="macbook">
-            <img class="product-img" src="assets/hero-laptop.jpg" alt="MacBook lineup">
-            <h3>MacBook & laptops</h3>
-            <p>MacBook Air/Pro and top Windows laptops, set up with warranty and optional migration.</p>
+          <article class="card product-card" data-category="laptops">
+            <img class="product-img" src="assets/hero-laptop.jpg" alt="Laptops">
+            <h3>Laptops</h3>
+            <p>MacBook Air/Pro and Windows laptops, set up with warranty and migration.</p>
           </article>
-          <article class="card product-card" data-category="watch">
-            <img class="product-img" src="assets/hero-watch.jpg" alt="Apple Watch and wearables">
-            <h3>Apple Watch & wearables</h3>
-            <p>Series 9, SE, and bands, plus popular wearables with screen protection pre-installed.</p>
+          <article class="card product-card" data-category="watches">
+            <img class="product-img" src="assets/hero-watch.jpg" alt="Smart watches">
+            <h3>Smart watches</h3>
+            <p>Apple Watch, Galaxy Watch, Fitbit and bands with screen protection pre-installed.</p>
           </article>
-          <article class="card product-card" data-category="accessories">
-            <img class="product-img" src="assets/hero-accessories.jpg" alt="Accessories">
-            <h3>Accessories</h3>
-            <p>Cases, screen guards, MagSafe, chargers, cables, power banks, and car mounts.</p>
-          </article>
-          <article class="card product-card" data-category="audio">
-            <img class="product-img" src="assets/hero-audio.jpg" alt="Audio gear">
-            <h3>Audio & earbuds</h3>
-            <p>AirPods, over-ear headphones, and Bluetooth speakers with setup support.</p>
+          <article class="card product-card" data-category="other-devices">
+            <img class="product-img" src="assets/hero-accessories.jpg" alt="Other devices">
+            <h3>Other devices</h3>
+            <p>Consoles, accessories, audio gear, and custom requests—just ask.</p>
           </article>
         </div>
         <div class="product-modal-backdrop" id="product-modal" aria-hidden="true">
@@ -260,6 +229,19 @@
               <button class="modal-close" type="button" id="product-close" aria-label="Close product list">×</button>
             </div>
             <div class="product-list" id="product-list"></div>
+          </div>
+        </div>
+        <div class="product-modal-backdrop" id="product-detail-modal" aria-hidden="true">
+          <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-detail-title">
+            <div class="modal-header">
+              <div>
+                <div class="modal-eyebrow">Product</div>
+                <h3 id="product-detail-title">Product details</h3>
+                <p id="product-detail-subtitle"></p>
+              </div>
+              <button class="modal-close" type="button" id="product-detail-close" aria-label="Close product detail">×</button>
+            </div>
+            <div class="product-detail" id="product-detail-content"></div>
           </div>
         </div>
       </div>
