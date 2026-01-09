@@ -1,16 +1,39 @@
 category,name,img1,img2,img3
+phones,iPhone 6,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 6 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 6s,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 6s Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 7,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 7 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 8,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 8 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone X,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone XR,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone XS,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone XS Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 11,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 11 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 11 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 12 mini,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 12,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 12 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 12 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 13 mini,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 13,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 13 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 13 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 14,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 14 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 14 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 14 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 15,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 15 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
 phones,iPhone 15 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
-phones,Samsung Galaxy S24,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
-phones,Google Pixel 8 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
-tablets,iPad Pro 12.9",assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
-tablets,Galaxy Tab S9,assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
-tablets,Lenovo Tab P series,assets/hero-tablet.jpg,assets/hero-tablet.jpg,assets/hero-tablet.jpg
-laptops,MacBook Air M2,assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
-laptops,MacBook Pro 14",assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
-laptops,Windows Ultrabook,assets/hero-laptop.jpg,assets/hero-laptop.jpg,assets/hero-laptop.jpg
-watches,Apple Watch Series 9,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
-watches,Galaxy Watch6,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
-watches,Fitbit Versa 4,assets/hero-watch.jpg,assets/hero-watch.jpg,assets/hero-watch.jpg
+phones,iPhone 15 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 16,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 16 Plus,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 16 Pro,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
+phones,iPhone 16 Pro Max,assets/hero-phone.jpg,assets/hero-phone.jpg,assets/hero-phone.jpg
 other-devices,PlayStation 5,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg
 other-devices,Xbox Series X,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg
 other-devices,Accessories bundle,assets/hero-accessories.jpg,assets/hero-accessories.jpg,assets/hero-accessories.jpg
