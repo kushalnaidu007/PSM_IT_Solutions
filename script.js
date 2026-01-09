@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const termsModal = document.getElementById('terms-modal');
   const termsClose = document.getElementById('terms-close');
   const termsOpen = document.getElementById('buy-terms-open');
+  const termsContent = document.getElementById('terms-content');
   const reviewsGrid = document.getElementById('reviews-grid');
   const reviewsLoading = document.getElementById('reviews-loading');
 
