@@ -237,8 +237,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       event.preventDefault();
       updateSummary();
       const deviceText = deviceSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
-      const seriesText = seriesSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
-      const modelText = modelSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const descText = issueDescription?.value?.trim() || 'N/A';
       const phoneText = customerPhone?.value?.trim() || '';
@@ -306,8 +304,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const payload = {
         device: deviceText,
-        series: seriesText,
-        model: modelText,
         issue: issueText,
         description: descText,
         phone: phoneText,
