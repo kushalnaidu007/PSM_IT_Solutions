@@ -48,7 +48,7 @@
         </div>
         <div class="header-actions">
           <a href="index.html" class="button ghost small" target="_blank">View site ↗</a>
-          <button class="button ghost small" id="logout-btn">Log out</button>
+          <button type="button" class="button ghost small" id="logout-btn">Log out</button>
         </div>
       </div>
     </header>
@@ -57,14 +57,17 @@
       <div class="admin-container">
 
         <div class="toolbar">
-          <button class="button primary" id="add-product-btn">+ Add product</button>
+          <div class="toolbar-left">
+            <button type="button" class="button primary" id="add-product-btn">+ Add product</button>
+            <button type="button" class="button ghost" id="import-csv-btn">↑ Import from CSV</button>
+          </div>
           <div class="toolbar-filters">
-            <select id="filter-status">
+            <select id="filter-status" title="Filter by status" aria-label="Filter by status">
               <option value="active">Active</option>
               <option value="archived">Archived</option>
               <option value="all">All products</option>
             </select>
-            <select id="filter-category">
+            <select id="filter-category" title="Filter by category" aria-label="Filter by category">
               <option value="">All categories</option>
               <option value="phones">Phones</option>
               <option value="other-devices">Other devices</option>
@@ -134,8 +137,8 @@
         <p class="confirm-product-name" id="confirm-name"></p>
         <p>This cannot be undone. The product will be permanently removed.</p>
         <div class="modal-actions">
-          <button class="button ghost" id="confirm-cancel">Cancel</button>
-          <button class="button danger" id="confirm-delete">Delete permanently</button>
+          <button type="button" class="button ghost" id="confirm-cancel">Cancel</button>
+          <button type="button" class="button danger" id="confirm-delete">Delete permanently</button>
         </div>
       </div>
     </div>
