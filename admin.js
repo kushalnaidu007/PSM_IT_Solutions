@@ -92,10 +92,6 @@ loginForm.addEventListener('submit', async (e) => {
 
 document.getElementById('logout-btn').addEventListener('click', showLogin);
 
-// Re-use saved session
-const savedToken = sessionStorage.getItem('adminToken');
-if (savedToken) { token = savedToken; showAdmin(); }
-
 // ── Product list ─────────────────────────────────────────────────────────────
 
 const loadProducts = async () => {
@@ -526,3 +522,7 @@ const showToast = (message, type = 'success') => {
     setTimeout(() => toast.remove(), 320);
   }, 3200);
 };
+
+// ── Boot — must run after all const declarations ──────────────────────────────
+const savedToken = sessionStorage.getItem('adminToken');
+if (savedToken) { token = savedToken; showAdmin(); }
