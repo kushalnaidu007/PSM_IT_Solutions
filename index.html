@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Spondon Tech Solutions | Fast Mobile & Tablet Repairs</title>
+  <meta name="description" content="Spondon Tech Solutions offers same-day screen replacements, battery swaps, water damage recovery and data rescue for phones, tablets, laptops and gaming consoles. Call 07799229333.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700&display=swap" rel="stylesheet">
@@ -32,7 +34,7 @@
         <span></span>
       </button>
       <div class="cta-inline">
-        <a class="button primary" href="tel:+440000000000">Call 07799229333</a>
+        <a class="button primary" href="tel:+447799229333">Call 07799229333</a>
       </div>
     </div>
   </header>
@@ -110,10 +112,12 @@
               <label>
                 Phone number
                 <input type="tel" id="customer-phone" placeholder="07799229333" required>
+                <span class="field-error" id="phone-error" aria-live="polite"></span>
               </label>
               <label>
                 Email address
                 <input type="email" id="customer-email" placeholder="you@example.com" required>
+                <span class="field-error" id="email-error" aria-live="polite"></span>
               </label>
             </div>
             <label>
@@ -126,7 +130,8 @@
               <div id="photo-list" class="photo-list" aria-live="polite"></div>
             </label>
             <div class="quote-actions">
-              <button type="submit" class="button primary">Get my tailored quote</button>
+              <button type="submit" class="button primary" id="quote-submit">Get my tailored quote</button>
+              <p class="form-status" id="form-status" aria-live="polite"></p>
               <p class="form-note">We confirm pricing and availability within 15 minutes during opening hours.</p>
             </div>
           </form>
@@ -361,13 +366,12 @@
         <div class="label">Visit</div>
         <p>90 Sitwill Street, Spondon DE21 7FG</p>
         <div class="label">Call</div>
-        <p>007799229333</p>
+        <p>07799229333</p>
       </div>
       <div>
         <div class="label">Follow</div>
         <div class="social">
           <a href="https://www.instagram.com/spondontechsolutions/">Instagram</a>
-          <a href="#">Facebook</a>
         </div>
       </div>
       <div>
@@ -381,8 +385,7 @@
     <div class="container footer-bottom">
       <p>© 2025 Spondon Tech Solutions. All rights reserved.</p>
       <div class="footer-links">
-        <a href="#">Privacy</a>
-        <a href="#">Terms</a>
+        <a href="#" id="footer-terms-link">Terms</a>
         <a href="#faq">FAQ</a>
       </div>
     </div>

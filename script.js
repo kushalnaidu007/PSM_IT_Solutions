@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const photoList = document.getElementById('photo-list');
   const customerPhone = document.getElementById('customer-phone');
   const customerEmail = document.getElementById('customer-email');
+  const phoneError = document.getElementById('phone-error');
+  const emailError = document.getElementById('email-error');
+  const formStatus = document.getElementById('form-status');
+  const quoteSubmit = document.getElementById('quote-submit');
   const whatsappFab = document.getElementById('whatsapp-fab');
   const whatsappModal = document.getElementById('whatsapp-modal');
   const whatsappClose = document.getElementById('whatsapp-close');
@@ -29,6 +33,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const termsContent = document.getElementById('terms-content');
   const reviewsGrid = document.getElementById('reviews-grid');
   const reviewsLoading = document.getElementById('reviews-loading');
+
+  const escapeHtml = (str) => String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  const sanitizeAssetUrl = (url) =>
+    typeof url === 'string' && /^assets\//.test(url) ? url : 'assets/hero-accessories.jpg';
 
   // Form options data
   let devices = [];
@@ -222,8 +236,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const files = Array.from(event.target.files || []);
         let combined = [...selectedPhotos, ...files];
         if (combined.length > 3) {
-          alert('Please upload a maximum of 3 images.');
+          if (formStatus) {
+            formStatus.textContent = 'Maximum 3 photos allowed — extras were removed.';
+            formStatus.className = 'form-status error';
+          }
           combined = combined.slice(0, 3);
+        } else if (formStatus) {
+          formStatus.className = 'form-status';
         }
         selectedPhotos.splice(0, selectedPhotos.length, ...combined);
         const dt = new DataTransfer();
@@ -236,6 +255,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     quoteForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       updateSummary();
+
+      if (phoneError) phoneError.textContent = '';
+      if (emailError) emailError.textContent = '';
+      if (formStatus) formStatus.className = 'form-status';
+
       const deviceText = deviceSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const descText = issueDescription?.value?.trim() || 'N/A';
@@ -247,12 +271,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const uniqueDigits = new Set(phoneDigits.split(''));
 
       if (phoneDigits.length < 10 || phoneDigits.length > 15 || uniqueDigits.size < 3) {
-        alert('Please enter a valid phone number (10-15 digits).');
+        if (phoneError) phoneError.textContent = 'Please enter a valid phone number (10–15 digits).';
         customerPhone?.focus();
         return;
       }
       if (!emailRegex.test(emailText)) {
-        alert('Please enter a valid email address.');
+        if (emailError) emailError.textContent = 'Please enter a valid email address.';
         customerEmail?.focus();
         return;
       }
@@ -290,7 +314,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const oversized = selectedPhotos.find((f) => f.size > 2 * 1024 * 1024);
         if (oversized) {
-          alert('Each photo must be under 2MB. Please remove or choose smaller files.');
+          if (formStatus) {
+            formStatus.textContent = 'Each photo must be under 2MB. Please remove or choose a smaller file.';
+            formStatus.className = 'form-status error';
+          }
           return;
         }
         attachments = (
@@ -298,7 +325,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ).filter(Boolean);
       } catch (e) {
         console.error('Failed to read attachments', e);
-        alert('Could not read attached photos. Please try again.');
+        if (formStatus) {
+          formStatus.textContent = 'Could not read attached photos. Please try again.';
+          formStatus.className = 'form-status error';
+        }
         return;
       }
 
@@ -311,6 +341,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         attachments
       };
 
+      if (quoteSubmit) {
+        quoteSubmit.disabled = true;
+        quoteSubmit.textContent = 'Sending…';
+      }
+
       try {
         const response = await fetch('/api/send-quote', {
           method: 'POST',
@@ -320,10 +355,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
           throw new Error('Failed to send');
         }
-        alert('Thanks! Your request was sent. We will contact you shortly.');
+        if (formStatus) {
+          formStatus.textContent = 'Thanks! Your request was sent. We will contact you shortly.';
+          formStatus.className = 'form-status success';
+        }
+        quoteForm?.reset();
+        selectedPhotos.splice(0);
+        renderPhotoChips();
       } catch (err) {
-        alert('Could not send your request. Please try again.');
+        if (formStatus) {
+          formStatus.textContent = 'Could not send your request. Please try again.';
+          formStatus.className = 'form-status error';
+        }
         console.error(err);
+      } finally {
+        if (quoteSubmit) {
+          quoteSubmit.disabled = false;
+          quoteSubmit.textContent = 'Get my tailored quote';
+        }
       }
     });
   }
@@ -398,7 +447,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const loadProducts = async () => {
     try {
-      // Try CSV first for easy editing
+      // Try Vercel Blob-backed API first (populated via admin panel)
+      const apiRes = await fetch('/api/products');
+      if (apiRes.ok) {
+        const apiData = await apiRes.json();
+        if (Object.keys(apiData).length > 0) {
+          products = apiData;
+          return;
+        }
+      }
+    } catch (e) {
+      // API unavailable — fall through to CSV
+    }
+
+    try {
+      // CSV fallback
       const csvRes = await fetch('assets/products.csv');
       if (csvRes.ok) {
         const csvText = await csvRes.text();
@@ -448,14 +511,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!productModal || !productList) return;
     const items = products[category] || [];
     productList.innerHTML = '';
-    items.forEach((item, idx) => {
+    items.forEach((item) => {
       const div = document.createElement('div');
       div.className = 'product-item';
-      const imgSrc = (item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg';
-      div.innerHTML = `
-        <img src="${imgSrc}" alt="${item.name}" loading="lazy">
-        <div class="product-name">${item.name}</div>
-      `;
+      const imgSrc = sanitizeAssetUrl((item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg');
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.alt = item.name;
+      img.loading = 'lazy';
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'product-name';
+      nameDiv.textContent = item.name;
+      div.appendChild(img);
+      div.appendChild(nameDiv);
       div.addEventListener('click', () => openProductDetail(item));
       productList.appendChild(div);
     });
@@ -465,25 +533,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const openProductDetail = (item) => {
     if (!productDetailModal || !productDetailContent) return;
-    const imgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
-    productDetailContent.innerHTML = `
-      <div class="product-gallery-main">
-        <img id="detail-main-img" src="${imgs[0]}" alt="${item.name}" loading="lazy">
-      </div>
-      <div class="product-thumbs" id="detail-thumbs">
-        ${imgs.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i === 0 ? 'active' : ''}" alt="${item.name}" loading="lazy">`).join('')}
-      </div>
-      <div class="product-name">${item.name}</div>
-    `;
-    const mainImg = document.getElementById('detail-main-img');
-    const thumbs = Array.from(document.querySelectorAll('#detail-thumbs img'));
-    thumbs.forEach((thumb) => {
+    const rawImgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
+    const imgs = rawImgs.map(sanitizeAssetUrl);
+
+    productDetailContent.innerHTML = '';
+
+    const galleryMain = document.createElement('div');
+    galleryMain.className = 'product-gallery-main';
+    const mainImg = document.createElement('img');
+    mainImg.src = imgs[0];
+    mainImg.alt = item.name;
+    mainImg.loading = 'lazy';
+    galleryMain.appendChild(mainImg);
+
+    const thumbsDiv = document.createElement('div');
+    thumbsDiv.className = 'product-thumbs';
+    const thumbEls = imgs.map((src, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.dataset.idx = i;
+      thumb.className = i === 0 ? 'active' : '';
+      thumb.alt = item.name;
+      thumb.loading = 'lazy';
+      return thumb;
+    });
+    thumbEls.forEach((thumb) => {
       thumb.addEventListener('click', () => {
-        thumbs.forEach((t) => t.classList.remove('active'));
+        thumbEls.forEach((t) => t.classList.remove('active'));
         thumb.classList.add('active');
         mainImg.src = thumb.getAttribute('src');
       });
+      thumbsDiv.appendChild(thumb);
     });
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'product-name';
+    nameDiv.textContent = item.name;
+
+    productDetailContent.appendChild(galleryMain);
+    productDetailContent.appendChild(thumbsDiv);
+    productDetailContent.appendChild(nameDiv);
+
     productDetailModal.classList.add('active');
     productDetailModal.setAttribute('aria-hidden', 'false');
   };
@@ -529,11 +619,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  termsOpen?.addEventListener('click', (event) => {
+  const openTermsModal = (event) => {
     event.preventDefault();
     termsModal?.classList.add('active');
     termsModal?.setAttribute('aria-hidden', 'false');
-  });
+  };
+
+  termsOpen?.addEventListener('click', openTermsModal);
+  document.getElementById('footer-terms-link')?.addEventListener('click', openTermsModal);
 
   const closeTermsModal = () => {
     if (!termsModal) return;
@@ -560,7 +653,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!res.ok) throw new Error('Failed to load terms');
       const text = await res.text();
       const paragraphs = text.split(/\n\s*\n/).filter(Boolean);
-      termsContent.innerHTML = paragraphs.map((p) => `<p>${p.replace(/\n/g, ' ')}</p>`).join('');
+      termsContent.innerHTML = '';
+      paragraphs.forEach((p) => {
+        const el = document.createElement('p');
+        el.textContent = p.replace(/\n/g, ' ');
+        termsContent.appendChild(el);
+      });
     } catch (e) {
       console.error('Could not load terms content', e);
       termsContent.innerHTML = '<p>Terms are temporarily unavailable. Please contact us for details.</p>';
@@ -571,9 +669,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   loadProducts();
 
-  // Load manual reviews from CSV
+  const renderReviewCards = (cleanReviews) => {
+    if (!reviewsGrid) return;
+    if (!cleanReviews.length) {
+      reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
+      return;
+    }
+
+    const reviewsPerPage = 3;
+    let page = 0;
+
+    const renderReviews = () => {
+      reviewsGrid.classList.add('fade');
+      reviewsGrid.innerHTML = '';
+      for (let i = 0; i < Math.min(reviewsPerPage, cleanReviews.length); i++) {
+        const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
+        const card = document.createElement('article');
+        card.className = 'card testimonial';
+
+        const quoteDiv = document.createElement('div');
+        quoteDiv.className = 'quote';
+        quoteDiv.textContent = '"';
+
+        const reviewP = document.createElement('p');
+        reviewP.textContent = rev.reviewText || 'No review text provided.';
+
+        const authorDiv = document.createElement('div');
+        authorDiv.className = 'author';
+
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'avatar';
+        avatarDiv.textContent = (rev.author || 'A').slice(0, 2).toUpperCase();
+
+        const authorInfo = document.createElement('div');
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'name';
+        nameDiv.textContent = rev.author || 'Anonymous';
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'meta';
+        metaDiv.textContent = `Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}`;
+
+        authorInfo.appendChild(nameDiv);
+        authorInfo.appendChild(metaDiv);
+        authorDiv.appendChild(avatarDiv);
+        authorDiv.appendChild(authorInfo);
+
+        card.appendChild(quoteDiv);
+        card.appendChild(reviewP);
+        card.appendChild(authorDiv);
+        reviewsGrid.appendChild(card);
+      }
+      setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
+      page = (page + 1) % Math.max(1, Math.ceil(cleanReviews.length / reviewsPerPage));
+    };
+
+    renderReviews();
+    if (cleanReviews.length > reviewsPerPage) {
+      setInterval(renderReviews, 5000);
+    }
+  };
+
+  // Load reviews — tries Google Places API first, falls back to CSV
   const loadReviews = async () => {
     if (!reviewsGrid) return;
+    try {
+      // Try the live Google Places API endpoint
+      const apiRes = await fetch('/api/reviews');
+      if (apiRes.ok) {
+        const data = await apiRes.json();
+        if (Array.isArray(data.reviews) && data.reviews.length > 0) {
+          const mapped = data.reviews.map((r) => ({
+            author: r.author,
+            rating: String(r.rating),
+            reviewText: r.text,
+            meta: r.relativeTime || ''
+          }));
+          if (reviewsLoading) reviewsLoading.remove();
+          renderReviewCards(mapped);
+          return;
+        }
+      }
+    } catch (e) {
+      // API unavailable — fall through to CSV
+    }
+
+    // CSV fallback
     try {
       const res = await fetch('assets/reviews.csv');
       if (!res.ok) throw new Error('Failed to load reviews');
@@ -583,13 +763,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
         return;
       }
-      const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
-      const idx = {
-        author: headers.indexOf('author'),
-        rating: headers.indexOf('rating'),
-        text: headers.indexOf('text'),
-        meta: headers.indexOf('meta'),
-      };
       const parsed = lines.slice(1).map((line) => {
         const cols = line.split(',');
         const author = (cols.shift() || '').trim();
@@ -600,42 +773,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       const cleanReviews = parsed.filter((r) => r.author || r.reviewText);
-      if (!cleanReviews.length) {
-        reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
-        return;
-      }
-
-      const reviewsPerPage = 3;
-      let page = 0;
-
-      const renderReviews = () => {
-        reviewsGrid.classList.add('fade');
-        reviewsGrid.innerHTML = '';
-        for (let i = 0; i < Math.min(reviewsPerPage, cleanReviews.length); i++) {
-          const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
-          const card = document.createElement('article');
-          card.className = 'card testimonial';
-          card.innerHTML = `
-            <div class="quote">“</div>
-            <p>${rev.reviewText || 'No review text provided.'}</p>
-            <div class="author">
-              <div class="avatar">${(rev.author || 'A').slice(0, 2).toUpperCase()}</div>
-              <div>
-                <div class="name">${rev.author || 'Anonymous'}</div>
-                <div class="meta">Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}</div>
-              </div>
-            </div>
-          `;
-          reviewsGrid.appendChild(card);
-        }
-        setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
-        page = (page + 1) % Math.max(1, Math.ceil(cleanReviews.length / reviewsPerPage));
-      };
-
-      renderReviews();
-      if (cleanReviews.length > reviewsPerPage) {
-        setInterval(renderReviews, 5000);
-      }
+      if (reviewsLoading) reviewsLoading.remove();
+      renderReviewCards(cleanReviews);
     } catch (e) {
       if (reviewsGrid) {
         reviewsGrid.innerHTML = '<p>Could not load reviews right now.</p>';

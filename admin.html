@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Spondon Tech Solutions</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <!-- Login screen -->
+  <div id="login-screen" class="login-screen">
+    <div class="login-card">
+      <div class="login-brand">
+        <img src="assets/logo.png" alt="Logo" class="login-logo">
+        <div>
+          <div class="login-title">Admin Panel</div>
+          <div class="login-sub">Spondon Tech Solutions</div>
+        </div>
+      </div>
+      <form id="login-form">
+        <label>
+          Password
+          <input type="password" id="login-password" placeholder="Enter admin password" required autofocus>
+        </label>
+        <p class="field-error" id="login-error" aria-live="polite"></p>
+        <button type="submit" class="button primary full" id="login-btn">Sign in</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Admin dashboard -->
+  <div id="admin-app" class="admin-app hidden">
+
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="brand">
+          <img src="assets/logo.png" alt="Logo" class="brand-logo">
+          <div>
+            <div class="brand-name">Spondon Tech Solutions</div>
+            <div class="brand-sub">Product Manager</div>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="index.html" class="button ghost small" target="_blank">View site ↗</a>
+          <button class="button ghost small" id="logout-btn">Log out</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      <div class="admin-container">
+
+        <div class="toolbar">
+          <button class="button primary" id="add-product-btn">+ Add product</button>
+          <div class="toolbar-filters">
+            <select id="filter-status">
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
+              <option value="all">All products</option>
+            </select>
+            <select id="filter-category">
+              <option value="">All categories</option>
+              <option value="phones">Phones</option>
+              <option value="other-devices">Other devices</option>
+              <option value="tablets">Tablets</option>
+              <option value="laptops">Laptops</option>
+              <option value="consoles">Consoles</option>
+              <option value="accessories">Accessories</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="product-grid" class="product-admin-grid">
+          <p id="grid-loading">Loading products…</p>
+        </div>
+
+      </div>
+    </main>
+
+    <!-- Add product modal -->
+    <div class="modal-backdrop hidden" id="product-form-modal">
+      <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-top">
+          <h2 id="modal-title">Add product</h2>
+          <button class="modal-close" id="modal-close" type="button" aria-label="Close">×</button>
+        </div>
+        <form id="product-form" novalidate>
+          <div class="form-row">
+            <label>
+              Product name
+              <input type="text" id="pf-name" placeholder="e.g. iPhone 16 Pro" required maxlength="200">
+            </label>
+            <label>
+              Category
+              <select id="pf-category" required>
+                <option value="" disabled selected>Select category</option>
+                <option value="phones">Phones</option>
+                <option value="other-devices">Other devices</option>
+                <option value="tablets">Tablets</option>
+                <option value="laptops">Laptops</option>
+                <option value="consoles">Consoles</option>
+                <option value="accessories">Accessories</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="img-section">
+            <div class="img-section-label">
+              Images <span class="img-req">— first 3 required, up to 5 total</span>
+            </div>
+            <div class="img-slots" id="img-slots"></div>
+          </div>
+
+          <p class="field-error" id="form-error" aria-live="polite"></p>
+
+          <div class="modal-actions">
+            <button type="button" class="button ghost" id="modal-cancel">Cancel</button>
+            <button type="submit" class="button primary" id="form-save">Save product</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Confirm delete modal -->
+    <div class="modal-backdrop hidden" id="confirm-modal">
+      <div class="modal-box confirm-box" role="dialog" aria-modal="true" aria-labelledby="confirm-title">
+        <h3 id="confirm-title">Delete product?</h3>
+        <p class="confirm-product-name" id="confirm-name"></p>
+        <p>This cannot be undone. The product will be permanently removed.</p>
+        <div class="modal-actions">
+          <button class="button ghost" id="confirm-cancel">Cancel</button>
+          <button class="button danger" id="confirm-delete">Delete permanently</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
