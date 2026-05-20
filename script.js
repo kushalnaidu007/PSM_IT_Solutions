@@ -613,9 +613,91 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   loadProducts();
 
-  // Load manual reviews from CSV
+  const renderReviewCards = (cleanReviews) => {
+    if (!reviewsGrid) return;
+    if (!cleanReviews.length) {
+      reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
+      return;
+    }
+
+    const reviewsPerPage = 3;
+    let page = 0;
+
+    const renderReviews = () => {
+      reviewsGrid.classList.add('fade');
+      reviewsGrid.innerHTML = '';
+      for (let i = 0; i < Math.min(reviewsPerPage, cleanReviews.length); i++) {
+        const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
+        const card = document.createElement('article');
+        card.className = 'card testimonial';
+
+        const quoteDiv = document.createElement('div');
+        quoteDiv.className = 'quote';
+        quoteDiv.textContent = '"';
+
+        const reviewP = document.createElement('p');
+        reviewP.textContent = rev.reviewText || 'No review text provided.';
+
+        const authorDiv = document.createElement('div');
+        authorDiv.className = 'author';
+
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'avatar';
+        avatarDiv.textContent = (rev.author || 'A').slice(0, 2).toUpperCase();
+
+        const authorInfo = document.createElement('div');
+        const nameDiv = document.createElement('div');
+        nameDiv.className = 'name';
+        nameDiv.textContent = rev.author || 'Anonymous';
+        const metaDiv = document.createElement('div');
+        metaDiv.className = 'meta';
+        metaDiv.textContent = `Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}`;
+
+        authorInfo.appendChild(nameDiv);
+        authorInfo.appendChild(metaDiv);
+        authorDiv.appendChild(avatarDiv);
+        authorDiv.appendChild(authorInfo);
+
+        card.appendChild(quoteDiv);
+        card.appendChild(reviewP);
+        card.appendChild(authorDiv);
+        reviewsGrid.appendChild(card);
+      }
+      setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
+      page = (page + 1) % Math.max(1, Math.ceil(cleanReviews.length / reviewsPerPage));
+    };
+
+    renderReviews();
+    if (cleanReviews.length > reviewsPerPage) {
+      setInterval(renderReviews, 5000);
+    }
+  };
+
+  // Load reviews — tries Google Places API first, falls back to CSV
   const loadReviews = async () => {
     if (!reviewsGrid) return;
+    try {
+      // Try the live Google Places API endpoint
+      const apiRes = await fetch('/api/reviews');
+      if (apiRes.ok) {
+        const data = await apiRes.json();
+        if (Array.isArray(data.reviews) && data.reviews.length > 0) {
+          const mapped = data.reviews.map((r) => ({
+            author: r.author,
+            rating: String(r.rating),
+            reviewText: r.text,
+            meta: r.relativeTime || ''
+          }));
+          if (reviewsLoading) reviewsLoading.remove();
+          renderReviewCards(mapped);
+          return;
+        }
+      }
+    } catch (e) {
+      // API unavailable — fall through to CSV
+    }
+
+    // CSV fallback
     try {
       const res = await fetch('assets/reviews.csv');
       if (!res.ok) throw new Error('Failed to load reviews');
@@ -625,13 +707,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
         return;
       }
-      const headers = lines[0].split(',').map((h) => h.trim().toLowerCase());
-      const idx = {
-        author: headers.indexOf('author'),
-        rating: headers.indexOf('rating'),
-        text: headers.indexOf('text'),
-        meta: headers.indexOf('meta'),
-      };
       const parsed = lines.slice(1).map((line) => {
         const cols = line.split(',');
         const author = (cols.shift() || '').trim();
@@ -642,62 +717,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
 
       const cleanReviews = parsed.filter((r) => r.author || r.reviewText);
-      if (!cleanReviews.length) {
-        reviewsGrid.innerHTML = '<p>No reviews available right now.</p>';
-        return;
-      }
-
-      const reviewsPerPage = 3;
-      let page = 0;
-
-      const renderReviews = () => {
-        reviewsGrid.classList.add('fade');
-        reviewsGrid.innerHTML = '';
-        for (let i = 0; i < Math.min(reviewsPerPage, cleanReviews.length); i++) {
-          const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
-          const card = document.createElement('article');
-          card.className = 'card testimonial';
-
-          const quoteDiv = document.createElement('div');
-          quoteDiv.className = 'quote';
-          quoteDiv.textContent = '”';
-
-          const reviewP = document.createElement('p');
-          reviewP.textContent = rev.reviewText || 'No review text provided.';
-
-          const authorDiv = document.createElement('div');
-          authorDiv.className = 'author';
-
-          const avatarDiv = document.createElement('div');
-          avatarDiv.className = 'avatar';
-          avatarDiv.textContent = (rev.author || 'A').slice(0, 2).toUpperCase();
-
-          const authorInfo = document.createElement('div');
-          const nameDiv = document.createElement('div');
-          nameDiv.className = 'name';
-          nameDiv.textContent = rev.author || 'Anonymous';
-          const metaDiv = document.createElement('div');
-          metaDiv.className = 'meta';
-          metaDiv.textContent = `Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}`;
-
-          authorInfo.appendChild(nameDiv);
-          authorInfo.appendChild(metaDiv);
-          authorDiv.appendChild(avatarDiv);
-          authorDiv.appendChild(authorInfo);
-
-          card.appendChild(quoteDiv);
-          card.appendChild(reviewP);
-          card.appendChild(authorDiv);
-          reviewsGrid.appendChild(card);
-        }
-        setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
-        page = (page + 1) % Math.max(1, Math.ceil(cleanReviews.length / reviewsPerPage));
-      };
-
-      renderReviews();
-      if (cleanReviews.length > reviewsPerPage) {
-        setInterval(renderReviews, 5000);
-      }
+      if (reviewsLoading) reviewsLoading.remove();
+      renderReviewCards(cleanReviews);
     } catch (e) {
       if (reviewsGrid) {
         reviewsGrid.innerHTML = '<p>Could not load reviews right now.</p>';
