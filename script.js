@@ -10,6 +10,10 @@ document.addEventListener('DOMContentLoaded', async () => {
   const photoList = document.getElementById('photo-list');
   const customerPhone = document.getElementById('customer-phone');
   const customerEmail = document.getElementById('customer-email');
+  const phoneError = document.getElementById('phone-error');
+  const emailError = document.getElementById('email-error');
+  const formStatus = document.getElementById('form-status');
+  const quoteSubmit = document.getElementById('quote-submit');
   const whatsappFab = document.getElementById('whatsapp-fab');
   const whatsappModal = document.getElementById('whatsapp-modal');
   const whatsappClose = document.getElementById('whatsapp-close');
@@ -232,8 +236,13 @@ document.addEventListener('DOMContentLoaded', async () => {
         const files = Array.from(event.target.files || []);
         let combined = [...selectedPhotos, ...files];
         if (combined.length > 3) {
-          alert('Please upload a maximum of 3 images.');
+          if (formStatus) {
+            formStatus.textContent = 'Maximum 3 photos allowed — extras were removed.';
+            formStatus.className = 'form-status error';
+          }
           combined = combined.slice(0, 3);
+        } else if (formStatus) {
+          formStatus.className = 'form-status';
         }
         selectedPhotos.splice(0, selectedPhotos.length, ...combined);
         const dt = new DataTransfer();
@@ -246,6 +255,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     quoteForm?.addEventListener('submit', async (event) => {
       event.preventDefault();
       updateSummary();
+
+      if (phoneError) phoneError.textContent = '';
+      if (emailError) emailError.textContent = '';
+      if (formStatus) formStatus.className = 'form-status';
+
       const deviceText = deviceSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const issueText = issueSelect?.selectedOptions?.[0]?.textContent?.trim() || 'N/A';
       const descText = issueDescription?.value?.trim() || 'N/A';
@@ -257,12 +271,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       const uniqueDigits = new Set(phoneDigits.split(''));
 
       if (phoneDigits.length < 10 || phoneDigits.length > 15 || uniqueDigits.size < 3) {
-        alert('Please enter a valid phone number (10-15 digits).');
+        if (phoneError) phoneError.textContent = 'Please enter a valid phone number (10–15 digits).';
         customerPhone?.focus();
         return;
       }
       if (!emailRegex.test(emailText)) {
-        alert('Please enter a valid email address.');
+        if (emailError) emailError.textContent = 'Please enter a valid email address.';
         customerEmail?.focus();
         return;
       }
@@ -300,7 +314,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const oversized = selectedPhotos.find((f) => f.size > 2 * 1024 * 1024);
         if (oversized) {
-          alert('Each photo must be under 2MB. Please remove or choose smaller files.');
+          if (formStatus) {
+            formStatus.textContent = 'Each photo must be under 2MB. Please remove or choose a smaller file.';
+            formStatus.className = 'form-status error';
+          }
           return;
         }
         attachments = (
@@ -308,7 +325,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         ).filter(Boolean);
       } catch (e) {
         console.error('Failed to read attachments', e);
-        alert('Could not read attached photos. Please try again.');
+        if (formStatus) {
+          formStatus.textContent = 'Could not read attached photos. Please try again.';
+          formStatus.className = 'form-status error';
+        }
         return;
       }
 
@@ -321,6 +341,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         attachments
       };
 
+      if (quoteSubmit) {
+        quoteSubmit.disabled = true;
+        quoteSubmit.textContent = 'Sending…';
+      }
+
       try {
         const response = await fetch('/api/send-quote', {
           method: 'POST',
@@ -330,10 +355,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) {
           throw new Error('Failed to send');
         }
-        alert('Thanks! Your request was sent. We will contact you shortly.');
+        if (formStatus) {
+          formStatus.textContent = 'Thanks! Your request was sent. We will contact you shortly.';
+          formStatus.className = 'form-status success';
+        }
+        quoteForm?.reset();
+        selectedPhotos.splice(0);
+        renderPhotoChips();
       } catch (err) {
-        alert('Could not send your request. Please try again.');
+        if (formStatus) {
+          formStatus.textContent = 'Could not send your request. Please try again.';
+          formStatus.className = 'form-status error';
+        }
         console.error(err);
+      } finally {
+        if (quoteSubmit) {
+          quoteSubmit.disabled = false;
+          quoteSubmit.textContent = 'Get my tailored quote';
+        }
       }
     });
   }
@@ -566,11 +605,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  termsOpen?.addEventListener('click', (event) => {
+  const openTermsModal = (event) => {
     event.preventDefault();
     termsModal?.classList.add('active');
     termsModal?.setAttribute('aria-hidden', 'false');
-  });
+  };
+
+  termsOpen?.addEventListener('click', openTermsModal);
+  document.getElementById('footer-terms-link')?.addEventListener('click', openTermsModal);
 
   const closeTermsModal = () => {
     if (!termsModal) return;
