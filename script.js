@@ -41,8 +41,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#39;');
 
-  const sanitizeAssetUrl = (url) =>
-    typeof url === 'string' && /^assets\//.test(url) ? url : 'assets/hero-accessories.jpg';
+  const sanitizeAssetUrl = (url) => {
+    if (typeof url !== 'string') return 'assets/hero-accessories.jpg';
+    if (/^assets\//.test(url)) return url;
+    if (/^https:\/\//.test(url)) return url;
+    return 'assets/hero-accessories.jpg';
+  };
 
   // Form options data
   let devices = [];

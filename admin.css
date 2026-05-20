@@ -145,7 +145,6 @@ label {
   gap: 12px;
   margin-bottom: 24px;
 }
-.toolbar-left { display: flex; gap: 8px; flex-wrap: wrap; }
 .toolbar-filters { display: flex; gap: 10px; flex-wrap: wrap; }
 .toolbar-filters select { width: auto; min-width: 148px; }
 
@@ -196,7 +195,7 @@ label {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
-.tag.live { background: rgba(24, 193, 254, 0.12); color: #0a85b5; }
+.tag.live { background: rgba(24, 193, 254, 0.12); color: #0870a0; }
 .tag.arch { background: rgba(0, 0, 0, 0.06); color: var(--muted); }
 .tag.cat { background: rgba(0, 0, 0, 0.04); color: var(--muted); border: 1px solid var(--border); }
 
