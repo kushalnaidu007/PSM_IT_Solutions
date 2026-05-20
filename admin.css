@@ -145,6 +145,7 @@ label {
   gap: 12px;
   margin-bottom: 24px;
 }
+.toolbar-left { display: flex; gap: 8px; flex-wrap: wrap; }
 .toolbar-filters { display: flex; gap: 10px; flex-wrap: wrap; }
 .toolbar-filters select { width: auto; min-width: 148px; }
 
@@ -308,7 +309,7 @@ label {
 }
 .slot-plus { font-size: 1.5rem; color: var(--muted); line-height: 1; }
 .slot-label { font-size: 0.68rem; font-weight: 700; color: var(--muted); }
-.slot-opt { font-size: 0.62rem; color: #aaa; }
+.slot-opt { font-size: 0.62rem; color: #767676; }
 
 .img-slot img {
   position: absolute;
