@@ -30,6 +30,16 @@ document.addEventListener('DOMContentLoaded', async () => {
   const reviewsGrid = document.getElementById('reviews-grid');
   const reviewsLoading = document.getElementById('reviews-loading');
 
+  const escapeHtml = (str) => String(str ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+
+  const sanitizeAssetUrl = (url) =>
+    typeof url === 'string' && /^assets\//.test(url) ? url : 'assets/hero-accessories.jpg';
+
   // Form options data
   let devices = [];
   let issues = [];
@@ -448,14 +458,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!productModal || !productList) return;
     const items = products[category] || [];
     productList.innerHTML = '';
-    items.forEach((item, idx) => {
+    items.forEach((item) => {
       const div = document.createElement('div');
       div.className = 'product-item';
-      const imgSrc = (item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg';
-      div.innerHTML = `
-        <img src="${imgSrc}" alt="${item.name}" loading="lazy">
-        <div class="product-name">${item.name}</div>
-      `;
+      const imgSrc = sanitizeAssetUrl((item.imgs && item.imgs[0]) || 'assets/hero-accessories.jpg');
+      const img = document.createElement('img');
+      img.src = imgSrc;
+      img.alt = item.name;
+      img.loading = 'lazy';
+      const nameDiv = document.createElement('div');
+      nameDiv.className = 'product-name';
+      nameDiv.textContent = item.name;
+      div.appendChild(img);
+      div.appendChild(nameDiv);
       div.addEventListener('click', () => openProductDetail(item));
       productList.appendChild(div);
     });
@@ -465,25 +480,47 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const openProductDetail = (item) => {
     if (!productDetailModal || !productDetailContent) return;
-    const imgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
-    productDetailContent.innerHTML = `
-      <div class="product-gallery-main">
-        <img id="detail-main-img" src="${imgs[0]}" alt="${item.name}" loading="lazy">
-      </div>
-      <div class="product-thumbs" id="detail-thumbs">
-        ${imgs.map((src, i) => `<img src="${src}" data-idx="${i}" class="${i === 0 ? 'active' : ''}" alt="${item.name}" loading="lazy">`).join('')}
-      </div>
-      <div class="product-name">${item.name}</div>
-    `;
-    const mainImg = document.getElementById('detail-main-img');
-    const thumbs = Array.from(document.querySelectorAll('#detail-thumbs img'));
-    thumbs.forEach((thumb) => {
+    const rawImgs = item.imgs && item.imgs.length ? item.imgs : ['assets/hero-accessories.jpg'];
+    const imgs = rawImgs.map(sanitizeAssetUrl);
+
+    productDetailContent.innerHTML = '';
+
+    const galleryMain = document.createElement('div');
+    galleryMain.className = 'product-gallery-main';
+    const mainImg = document.createElement('img');
+    mainImg.src = imgs[0];
+    mainImg.alt = item.name;
+    mainImg.loading = 'lazy';
+    galleryMain.appendChild(mainImg);
+
+    const thumbsDiv = document.createElement('div');
+    thumbsDiv.className = 'product-thumbs';
+    const thumbEls = imgs.map((src, i) => {
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.dataset.idx = i;
+      thumb.className = i === 0 ? 'active' : '';
+      thumb.alt = item.name;
+      thumb.loading = 'lazy';
+      return thumb;
+    });
+    thumbEls.forEach((thumb) => {
       thumb.addEventListener('click', () => {
-        thumbs.forEach((t) => t.classList.remove('active'));
+        thumbEls.forEach((t) => t.classList.remove('active'));
         thumb.classList.add('active');
         mainImg.src = thumb.getAttribute('src');
       });
+      thumbsDiv.appendChild(thumb);
     });
+
+    const nameDiv = document.createElement('div');
+    nameDiv.className = 'product-name';
+    nameDiv.textContent = item.name;
+
+    productDetailContent.appendChild(galleryMain);
+    productDetailContent.appendChild(thumbsDiv);
+    productDetailContent.appendChild(nameDiv);
+
     productDetailModal.classList.add('active');
     productDetailModal.setAttribute('aria-hidden', 'false');
   };
@@ -560,7 +597,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!res.ok) throw new Error('Failed to load terms');
       const text = await res.text();
       const paragraphs = text.split(/\n\s*\n/).filter(Boolean);
-      termsContent.innerHTML = paragraphs.map((p) => `<p>${p.replace(/\n/g, ' ')}</p>`).join('');
+      termsContent.innerHTML = '';
+      paragraphs.forEach((p) => {
+        const el = document.createElement('p');
+        el.textContent = p.replace(/\n/g, ' ');
+        termsContent.appendChild(el);
+      });
     } catch (e) {
       console.error('Could not load terms content', e);
       termsContent.innerHTML = '<p>Terms are temporarily unavailable. Please contact us for details.</p>';
@@ -615,17 +657,37 @@ document.addEventListener('DOMContentLoaded', async () => {
           const rev = cleanReviews[(page * reviewsPerPage + i) % cleanReviews.length];
           const card = document.createElement('article');
           card.className = 'card testimonial';
-          card.innerHTML = `
-            <div class="quote">“</div>
-            <p>${rev.reviewText || 'No review text provided.'}</p>
-            <div class="author">
-              <div class="avatar">${(rev.author || 'A').slice(0, 2).toUpperCase()}</div>
-              <div>
-                <div class="name">${rev.author || 'Anonymous'}</div>
-                <div class="meta">Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}</div>
-              </div>
-            </div>
-          `;
+
+          const quoteDiv = document.createElement('div');
+          quoteDiv.className = 'quote';
+          quoteDiv.textContent = '”';
+
+          const reviewP = document.createElement('p');
+          reviewP.textContent = rev.reviewText || 'No review text provided.';
+
+          const authorDiv = document.createElement('div');
+          authorDiv.className = 'author';
+
+          const avatarDiv = document.createElement('div');
+          avatarDiv.className = 'avatar';
+          avatarDiv.textContent = (rev.author || 'A').slice(0, 2).toUpperCase();
+
+          const authorInfo = document.createElement('div');
+          const nameDiv = document.createElement('div');
+          nameDiv.className = 'name';
+          nameDiv.textContent = rev.author || 'Anonymous';
+          const metaDiv = document.createElement('div');
+          metaDiv.className = 'meta';
+          metaDiv.textContent = `Rating: ${rev.rating || 'N/A'} ★${rev.meta ? ' • ' + rev.meta : ''}`;
+
+          authorInfo.appendChild(nameDiv);
+          authorInfo.appendChild(metaDiv);
+          authorDiv.appendChild(avatarDiv);
+          authorDiv.appendChild(authorInfo);
+
+          card.appendChild(quoteDiv);
+          card.appendChild(reviewP);
+          card.appendChild(authorDiv);
           reviewsGrid.appendChild(card);
         }
         setTimeout(() => reviewsGrid.classList.remove('fade'), 300);
