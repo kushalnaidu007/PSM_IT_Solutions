@@ -447,7 +447,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const loadProducts = async () => {
     try {
-      // Try CSV first for easy editing
+      // Try Vercel Blob-backed API first (populated via admin panel)
+      const apiRes = await fetch('/api/products');
+      if (apiRes.ok) {
+        const apiData = await apiRes.json();
+        if (Object.keys(apiData).length > 0) {
+          products = apiData;
+          return;
+        }
+      }
+    } catch (e) {
+      // API unavailable — fall through to CSV
+    }
+
+    try {
+      // CSV fallback
       const csvRes = await fetch('assets/products.csv');
       if (csvRes.ok) {
         const csvText = await csvRes.text();
